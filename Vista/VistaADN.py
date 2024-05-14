@@ -1,9 +1,9 @@
 import tkinter as tk
 from tkinter import ttk
 from tkinter import messagebox
-from Modelo import CRUDVirus
-from Modelo import CRUDADN
-from Presentador import ADN
+from DAO import CRUDVirus
+from DAO import CRUDADN
+from DTO import cargo_laboral
 import pymysql
 
 class VentanaADNS:

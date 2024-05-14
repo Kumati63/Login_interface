@@ -1,9 +1,10 @@
-from Presentador.Conexion import Conexion
+from DTO.Conexion import Conexion
+
 # Datos de conexion hacia la BD
 host = 'localhost'
 user = 'root'
 password = ''
-db = 'proyecto_agil'
+db = 'sistema_yury'
 
 # Crear una función para insertar datos en la tabla usuario
 
@@ -14,8 +15,9 @@ def ingresar(usu):
         con = Conexion(host, user, password, db)
         # print("Estado CON:{}".format(con))
         # Se cea la Query ara hacer la inserción de un Usuario
-        sql = "INSERT INTO virus SET nombreCientifico = '{}', nombre = '{}', fechaDesc = '{}'" .\
-            format(usu.nombreCientifico, usu.nombre , usu.fechaDesc)
+        sql = "INSERT INTO usuarios SET nombre = '{}', apellido = '{}', nombreUsuario = '{}', " \
+            "rut = '{}', rol = '{}', email = '{}', contraseña = '{}'".\
+            format(usu.nombre, usu.apellido , usu.nombreUsuario, usu.rut, usu.rol, usu.email, usu.contraseña)
         # Ejecutar la Query para hacer la inserción
         con.ejecuta_query(sql)
         # Debemos actualizar
@@ -32,7 +34,7 @@ def ingresar(usu):
 def mostrarTodos():
     try:
         con = Conexion(host, user, password, db)
-        sql = "select * from virus"
+        sql = "select * from usuarios"
         cursor = con.ejecuta_query(sql)
         datos = cursor.fetchall()  # Esto devuelve todas las consultas/datos
         con.desconectar()
@@ -44,7 +46,7 @@ def mostrarTodos():
 def mostrarParticular(id):
     try:
         con = Conexion(host, user, password, db)
-        sql = "select * from virus where idVirus = {}".format(id)
+        sql = "select * from usuarios where idUsuario = {}".format(id)
         cursor = con.ejecuta_query(sql)
         dato = cursor.fetchone()  # Esto devuelve solo un
         con.desconectar()
@@ -56,7 +58,7 @@ def mostrarParticular(id):
 def mostrarParcial(cant):
     try:
         con = Conexion(host, user, password, db)
-        sql = "select * from virus"
+        sql = "select * from usuarios"
         cursor = con.ejecuta_query(sql)
         datos = cursor.fetchmany(size=cant)
         con.desconectar()
@@ -68,8 +70,9 @@ def mostrarParcial(cant):
 def modificar(usu):
     try:
         con = Conexion(host, user, password, db)
-        sql = "INSERT INTO virus SET nombreCientifico = '{}', nombre = '{}', fechaDesc = '{}' where idVirus  = {}". \
-            format(usu[1], usu[2], usu[3], usu[0])
+        sql = "INSERT INTO usuarios SET nombre = '{}', apellido = '{}', nombreUsuario = '{}', " \
+            "rut = '{}', rol = '{}', email = '{}', contraseña = '{}' where idUsuario  = {}". \
+            format(usu[1], usu[2], usu[3], usu[4], usu[5], usu[6], usu[7], usu[0])
         con.ejecuta_query(sql)
         con.commit()
         input("\n\nDatos Modificados con Éxito :)")
@@ -82,7 +85,7 @@ def modificar(usu):
 def eliminar(id):
     try:
         con = Conexion(host, user, password, db)
-        sql = "delete from virus where idVirus  = {}".format(id)
+        sql = "delete from usuarios where idUsuario  = {}".format(id)
         con.ejecuta_query(sql)
         con.commit()
         input("\n\nUsuario Eliminado con Éxito :)")

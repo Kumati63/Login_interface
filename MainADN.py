@@ -1,6 +1,6 @@
-import Modelo.CRUDADN
-import Presentador.Varios
-from Presentador import Conexion, Varios, ADN
+import DAO.CRUDADN
+import DTO.Varios
+from DTO import Conexion, Varios, cargo_laboral
 import os
 
 
@@ -30,7 +30,7 @@ def ingresarDatos():
     # Creamos ao objeto de tipo Usuario
     usu = ADN.ADN(Id_ADN, Secuencia_ADN)
     # Solicitar al CRUD que realice la inserción
-    Modelo.CRUDADN.ingresar(usu)
+    DAO.CRUDADN.ingresar(usu)
 
 
 def menuMostrar():
@@ -51,7 +51,7 @@ def mostrarTodos():
     print("=========================")
     print("    MOSTRAR TODOS")
     print("=========================")
-    datos = Modelo.CRUDADN.mostrarTodos()
+    datos = DAO.CRUDADN.mostrarTodos()
     print("ID\tID del ADN\t\tSecuencia de ADN")
     for dato in datos:
         print("{}\t{}\t\t{}".format(dato[0], dato[1], dato[2]))
@@ -63,7 +63,7 @@ def mostrarUno():
     print("    MOSTRAR UNO")
     print("=========================")
     idADN = int(input("Ingrese el id del ADN a Consultar: "))
-    dato = Modelo.CRUDADN.mostrarParticular(idADN)
+    dato = DAO.CRUDADN.mostrarParticular(idADN)
     print("=========================")
     print("   DATOS DEL ADN")
     print("=========================")
@@ -81,7 +81,7 @@ def mostrarParcial():
     print("    MOSTRAR PARCIAL")
     print("=========================")
     cant = int(input("Ingrese Cantidad de Datos a Mostrar: "))
-    datos = Modelo.CRUDADN.mostrarParcial(cant)
+    datos = DAO.CRUDADN.mostrarParcial(cant)
     print("ID\tID del ADN\t\tSecuencia de ADN")
     for dato in datos:
         print("{}\t{}\t\t{}".format(dato[0], dato[1], dato[2]))
@@ -95,7 +95,7 @@ def modificarDatos():
     print("=========================")
     mostrarTodos()
     idMod = int(input("\nIngrese el ID del ADN a Modificar: "))
-    dato = Modelo.CRUDADN.mostrarParticular(idMod)
+    dato = DAO.CRUDADN.mostrarParticular(idMod)
 
     print("Id ADN                   :{}".format(dato[0]))
     listanuevos.append(dato[0])
@@ -118,9 +118,9 @@ def modificarDatos():
 
 
     # Fecha y la Hora
-    listanuevos.append(Presentador.Varios.fecha_hoy())
-    listanuevos.append(Presentador.Varios.hora())
-    Modelo.CRUDADN.modificar(listanuevos)
+    listanuevos.append(DTO.Varios.fecha_hoy())
+    listanuevos.append(DTO.Varios.hora())
+    DAO.CRUDADN.modificar(listanuevos)
 
 
 def eliminarDatos():
@@ -130,7 +130,7 @@ def eliminarDatos():
     print("=========================")
     mostrarTodos()
     idEliminar = int(input("Ingrese Id de ADN a Eliminar: "))
-    Modelo.CRUDADN.eliminar(idEliminar)
+    DAO.CRUDADN.eliminar(idEliminar)
 
 
 def mostrar():

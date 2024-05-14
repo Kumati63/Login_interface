@@ -1,6 +1,6 @@
-import Modelo.CRUDVirus
-import Presentador.Varios
-from Presentador import Conexion, Varios, Virus
+import DAO.CRUDVirus
+import DTO.Varios
+from DTO import Conexion, Varios, tipo_usuario
 import os
 
 
@@ -31,7 +31,7 @@ def ingresarDatos():
     # Creamos ao objeto de tipo Usuario
     usu = Virus.Virus(nombreCientifico, nombre , fechaDesc)
     # Solicitar al CRUD que realice la inserción
-    Modelo.CRUDVirus.ingresar(usu)
+    DAO.CRUDVirus.ingresar(usu)
 
 
 def menuMostrar():
@@ -52,7 +52,7 @@ def mostrarTodos():
     print("=========================")
     print("    MOSTRAR TODOS")
     print("=========================")
-    datos = Modelo.CRUDVirus.mostrarTodos()
+    datos = DAO.CRUDVirus.mostrarTodos()
     print("ID\tnombreCientifico\t\tnombre\tfechaDesc")
     for dato in datos:
         print("{}\t{}\t\t{}\t\t{}".format(dato[0], dato[1], dato[2], dato[3]))
@@ -64,7 +64,7 @@ def mostrarUno():
     print("    MOSTRAR UNO")
     print("=========================")
     idUsuario = int(input("Ingrese Id Usuarioa a Consultar: "))
-    dato = Modelo.CRUDVirus.mostrarParticular(idUsuario)
+    dato = DAO.CRUDVirus.mostrarParticular(idUsuario)
     print("=========================")
     print("   DATOS DEL USUARIO")
     print("=========================")
@@ -82,7 +82,7 @@ def mostrarParcial():
     print("    MOSTRAR PARCIAL")
     print("=========================")
     cant = int(input("Ingrese Cantidad de Datos a Mostrar: "))
-    datos = Modelo.CRUDVirus.mostrarParcial(cant)
+    datos = DAO.CRUDVirus.mostrarParcial(cant)
     print("ID\tnombreCientifico\t\tnombre\tfechaDesc")
     for dato in datos:
         print("{}\t{}\t\t{}\t\t{}".format(dato[0], dato[1], dato[2], dato[3]))
@@ -96,7 +96,7 @@ def modificarDatos():
     print("=========================")
     mostrarTodos()
     idMod = int(input("\nIngrese un IdUsuario a Modificar: "))
-    dato = Modelo.CRUDVirus.mostrarParticular(idMod)
+    dato = DAO.CRUDVirus.mostrarParticular(idMod)
 
     print("Id Virus                     :{}".format(dato[0]))
     listanuevos.append(dato[0])
@@ -130,9 +130,9 @@ def modificarDatos():
 
 
     # Fecha y la Hora
-    listanuevos.append(Presentador.Varios.fecha_hoy())
-    listanuevos.append(Presentador.Varios.hora())
-    Modelo.CRUDVirus.modificar(listanuevos)
+    listanuevos.append(DTO.Varios.fecha_hoy())
+    listanuevos.append(DTO.Varios.hora())
+    DAO.CRUDVirus.modificar(listanuevos)
 
 
 def eliminarDatos():
@@ -142,7 +142,7 @@ def eliminarDatos():
     print("=========================")
     mostrarTodos()
     idEliminar = int(input("Ingrese Id VIRUS a Eliminar: "))
-    Modelo.CRUDVirus.eliminar(idEliminar)
+    DAO.CRUDVirus.eliminar(idEliminar)
 
 
 def mostrar():

@@ -1,5 +1,5 @@
-from Presentador.Conexion import Conexion
-from Presentador.Banco import Banco
+from DTO.Conexion import Conexion
+from DTO.con_emergencias import Banco
 
 # Datos de conexión hacia la BD
 host = 'localhost'

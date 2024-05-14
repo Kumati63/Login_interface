@@ -1,4 +1,4 @@
-from Presentador.Conexion import Conexion
+from DTO.Conexion import Conexion
 # Datos de conexion hacia la BD
 host = 'localhost'
 user = 'root'
@@ -8,41 +8,43 @@ db = 'proyecto_agil'
 # Crear una función para insertar datos en la tabla usuario
 
 
-def ingresar(nombre_virus, sintoma_valor):
+def ingresar(usu):
     try:
-        # Generar una conexión hacia la BD
+        # genrar una conexion hacia la BD
         con = Conexion(host, user, password, db)
-        # Se crea la Query para hacer la inserción de un Síntoma
-        sql = "INSERT INTO Sintomas (nombre, sintoma) VALUES (%s, %s)"
+        # print("Estado CON:{}".format(con))
+        # Se cea la Query ara hacer la inserción de un Usuario
+        sql = "INSERT INTO virus SET nombreCientifico = '{}', nombre = '{}', fechaDesc = '{}'" .\
+            format(usu.nombreCientifico, usu.nombre , usu.fechaDesc)
         # Ejecutar la Query para hacer la inserción
-        con.ejecuta_query(sql, (nombre_virus, sintoma_valor))
+        con.ejecuta_query(sql)
         # Debemos actualizar
         con.commit()
         # Enviar mensaje de inserción exitosa
         print("\nDatos insertados con Éxito :)")
         # Debemos soltar la conexión
         con.desconectar()
-
     except Exception as e:
         print("Error al insertar en:{}".format(e))
         con.rollback()
 
+
 def mostrarTodos():
     try:
         con = Conexion(host, user, password, db)
-        sql = "select * from Sintomas"
+        sql = "select * from virus"
         cursor = con.ejecuta_query(sql)
-        datos = cursor.fetchall()
+        datos = cursor.fetchall()  # Esto devuelve todas las consultas/datos
         con.desconectar()
         return datos
     except Exception as e:
-        print("Error al Mostrar Todos:{}".format(e))
+        print("Erorr al Mostrar Todos:{}".format(e))
 
 
-def MostrarParticular(id):
+def mostrarParticular(id):
     try:
         con = Conexion(host, user, password, db)
-        sql = "select * from Sintomas where idSintomas = {}".format(id)
+        sql = "select * from virus where idVirus = {}".format(id)
         cursor = con.ejecuta_query(sql)
         dato = cursor.fetchone()  # Esto devuelve solo un
         con.desconectar()
@@ -54,7 +56,7 @@ def MostrarParticular(id):
 def mostrarParcial(cant):
     try:
         con = Conexion(host, user, password, db)
-        sql = "select * from Sintomas"
+        sql = "select * from virus"
         cursor = con.ejecuta_query(sql)
         datos = cursor.fetchmany(size=cant)
         con.desconectar()
@@ -66,8 +68,8 @@ def mostrarParcial(cant):
 def modificar(usu):
     try:
         con = Conexion(host, user, password, db)
-        sql = "INSERT INTO Sintomas SET nombre = '{}',sintoma = '{}' where idSintomas  = {}". \
-            format(usu[1],usu[2], usu[0])
+        sql = "INSERT INTO virus SET nombreCientifico = '{}', nombre = '{}', fechaDesc = '{}' where idVirus  = {}". \
+            format(usu[1], usu[2], usu[3], usu[0])
         con.ejecuta_query(sql)
         con.commit()
         input("\n\nDatos Modificados con Éxito :)")
@@ -80,10 +82,10 @@ def modificar(usu):
 def eliminar(id):
     try:
         con = Conexion(host, user, password, db)
-        sql = "delete from Sintomas where idSintomas  = {}".format(id)
+        sql = "delete from virus where idVirus  = {}".format(id)
         con.ejecuta_query(sql)
         con.commit()
-        input("\n\nADN Eliminado con Éxito :)")
+        input("\n\nUsuario Eliminado con Éxito :)")
         con.desconectar()
     except Exception as e:
         print("Error al Eliminar: {}".format(e))

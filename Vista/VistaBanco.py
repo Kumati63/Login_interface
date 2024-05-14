@@ -1,7 +1,7 @@
 import tkinter as tk
 from tkinter import filedialog, messagebox
 from os.path import basename
-from Modelo import CRUDBanco
+from DAO import CRUDBanco
 
 class VistaBanco:
     def __init__(self):

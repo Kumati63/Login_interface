@@ -1,6 +1,6 @@
-import Modelo.CRUDUsuario
-import Presentador.Varios
-from Presentador import Conexion, Varios, Usuarios
+import DAO.CRUDUsuario
+import DTO.Varios
+from DTO import Conexion, Varios, usuario
 import os
 
 
@@ -40,7 +40,7 @@ def ingresarDatos():
     # Creamos ao objeto de tipo Usuario
     usu = Usuarios.Usuarios(nombre, apellido , nombreUsuario, rut, rol, email, contraseña)
     # Solicitar al CRUD que realice la inserción
-    Modelo.CRUDUsuario.ingresar(usu)
+    DAO.CRUDUsuario.ingresar(usu)
 
 
 def menuMostrar():
@@ -61,7 +61,7 @@ def mostrarTodos():
     print("=========================")
     print("    MOSTRAR TODOS")
     print("=========================")
-    datos = Modelo.CRUDUsuario.mostrarTodos()
+    datos = DAO.CRUDUsuario.mostrarTodos()
     print("ID\tNombre\t\tApellido\tnombreUsuario\trut\t\t\t\trol\t\t\temail\t\t\t\tcontraseña")
     for dato in datos:
         print("{}\t{}\t\t{}\t\t{}\t\t{}\t\t\t{}\t\t\t{}\t\t\t{}".
@@ -74,7 +74,7 @@ def mostrarUno():
     print("    MOSTRAR UNO")
     print("=========================")
     idUsuario = int(input("Ingrese Id Usuarioa a Consultar: "))
-    dato = Modelo.CRUDUsuario.mostrarParticular(idUsuario)
+    dato = DAO.CRUDUsuario.mostrarParticular(idUsuario)
     print("=========================")
     print("   DATOS DEL USUARIO")
     print("=========================")
@@ -96,7 +96,7 @@ def mostrarParcial():
     print("    MOSTRAR PARCIAL")
     print("=========================")
     cant = int(input("Ingrese Cantidad de Datos a Mostrar: "))
-    datos = Modelo.CRUDUsuario.mostrarParcial(cant)
+    datos = DAO.CRUDUsuario.mostrarParcial(cant)
     print("ID\tNombre\t\tApellido\tnombreUsuario\trut\t\t\t\trol\t\t\temail\t\t\t\tcontraseña")
     for dato in datos:
         print("{}\t{}\t\t{}\t\t{}\t\t{}\t\t\t{}\t\t\t{}\t\t\t{}".
@@ -111,7 +111,7 @@ def modificarDatos():
     print("=========================")
     mostrarTodos()
     idMod = int(input("\nIngrese un IdUsuario a Modificar: "))
-    dato = Modelo.CRUDUsuario.mostrarParticular(idMod)
+    dato = DAO.CRUDUsuario.mostrarParticular(idMod)
 
     print("Id Usuario                   :{}".format(dato[0]))
     listanuevos.append(dato[0])
@@ -178,9 +178,9 @@ def modificarDatos():
 
 
     # Fecha y la Hora
-    listanuevos.append(Presentador.Varios.fecha_hoy())
-    listanuevos.append(Presentador.Varios.hora())
-    Modelo.CRUDUsuario.modificar(listanuevos)
+    listanuevos.append(DTO.Varios.fecha_hoy())
+    listanuevos.append(DTO.Varios.hora())
+    DAO.CRUDUsuario.modificar(listanuevos)
 
 
 def eliminarDatos():
@@ -190,7 +190,7 @@ def eliminarDatos():
     print("=========================")
     mostrarTodos()
     idEliminar = int(input("Ingrese Id Usuario a Eliminar: "))
-    Modelo.CRUDUsuario.eliminar(idEliminar)
+    DAO.CRUDUsuario.eliminar(idEliminar)
 
 
 def mostrar():
