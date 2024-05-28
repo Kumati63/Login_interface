@@ -3,11 +3,7 @@ import pymysql
 from tkinter import messagebox
 import DAO.CRUDUsuario
 from DTO import usuario
-from MainIngresoVirus import VentanaVirus
-from VistaADN import VentanaADNS
-from MainEliminacionSintomas import VentanaEliminacionSintomas
-import MainIngresoADN
-import VistaBanco
+
 
 def salir_del_usuario_actual(ventana_actual):
     # Mostrar la ventana principal

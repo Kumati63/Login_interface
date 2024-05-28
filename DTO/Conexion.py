@@ -23,5 +23,3 @@ class Conexion:  # El codigo de conexion siempre sera el mismo
 
     def rollback(self):
         self.db.rollback()
-def tumam():
-    return

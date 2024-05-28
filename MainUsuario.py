@@ -30,15 +30,21 @@ def ingresarDatos():
         else:
             print("\nEl RUT ingresado no es Válido :(")
     # Se da inicio a la solicitud de los datos del uauario
-    nombre = input("Ingrese su Nommbre: ")
-    apellido = input("Ingrese su Apellido: ")
-    nombreUsuario = input("Ingrese nombre de usuario: ")
-    rut = input("Ingrese su RUT, solo números")
-    rol = int(input("Ingrese su rol"))
+    nombre = input("Ingrese su Nombre Completo: ")
     email = input("ngrese su Correo Electronico")
-    contraseña = input("Ingrese su contraseña")
-    # Creamos ao objeto de tipo Usuario
-    usu = Usuarios.Usuarios(nombre, apellido , nombreUsuario, rut, rol, email, contraseña)
+    while True:
+        contraseña = input("Ingrese su contraseña")
+        contraseña2 = input("Repita su contraseña")
+        if (contraseña == contraseña2):
+            password = contraseña
+            break
+        else:
+            print("contraseñas no coinciden")
+
+    estado = 1
+
+    # Creamos al objeto de tipo Usuario
+    usu = usuario.usuario(rut, nombre, email, password, estado)
     # Solicitar al CRUD que realice la inserción
     DAO.CRUDUsuario.ingresar(usu)
 
@@ -62,10 +68,10 @@ def mostrarTodos():
     print("    MOSTRAR TODOS")
     print("=========================")
     datos = DAO.CRUDUsuario.mostrarTodos()
-    print("ID\tNombre\t\tApellido\tnombreUsuario\trut\t\t\t\trol\t\t\temail\t\t\t\tcontraseña")
+    print("ID\tRut\t\tNombre Completo\tEmail\tpassword\t\t\t\testado")
     for dato in datos:
-        print("{}\t{}\t\t{}\t\t{}\t\t{}\t\t\t{}\t\t\t{}\t\t\t{}".
-              format(dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6], dato[7]))
+        print("{}\t{}\t\t{}\t\t{}\t\t{}\t\t{}".
+              format(dato[0], dato[1], dato[2], dato[3], dato[4],dato[5]))
 
 
 def mostrarUno():
@@ -78,14 +84,12 @@ def mostrarUno():
     print("=========================")
     print("   DATOS DEL USUARIO")
     print("=========================")
-    print("ID                   {}".format(dato[0]))
-    print("Nombre               {}".format(dato[1]))
-    print("Apellido             {}".format(dato[2]))
-    print("nombreUsuario        {}".format(dato[3]))
-    print("rut                  {}".format(dato[4]))
-    print("rol                  {}".format(dato[5]))
-    print("email                {}".format(dato[6]))
-    print("contraseña           {}".format(dato[7]))
+    print("ID                       {}".format(dato[0]))
+    print("Rut                      {}".format(dato[1]))
+    print("Nombre Completo          {}".format(dato[2]))
+    print("Email                    {}".format(dato[3]))
+    print("password                 {}".format(dato[4]))
+    print("estado                   {}".format(dato[5]))
 
     input("\nPresione Enter para continuar")
 

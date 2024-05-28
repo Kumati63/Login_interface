@@ -1,10 +1,11 @@
 from DTO.Conexion import Conexion
+from DTO.Varios import hash_md5
 
 # Datos de conexion hacia la BD
 host = 'localhost'
 user = 'root'
 password = ''
-db = 'sistema_yury'
+db = 'login_interface'
 
 # Crear una función para insertar datos en la tabla usuario
 
@@ -15,9 +16,8 @@ def ingresar(usu):
         con = Conexion(host, user, password, db)
         # print("Estado CON:{}".format(con))
         # Se cea la Query ara hacer la inserción de un Usuario
-        sql = "INSERT INTO usuarios SET nombre = '{}', apellido = '{}', nombreUsuario = '{}', " \
-            "rut = '{}', rol = '{}', email = '{}', contraseña = '{}'".\
-            format(usu.nombre, usu.apellido , usu.nombreUsuario, usu.rut, usu.rol, usu.email, usu.contraseña)
+        sql = "INSERT INTO usuario SET rut = '{}', nombre_completo = '{}', email = '{}', password = '{}', estado = 1".\
+            format(usu.rut, usu.nombre_completo, usu.email, hash_md5(usu.password), usu.estado)
         # Ejecutar la Query para hacer la inserción
         con.ejecuta_query(sql)
         # Debemos actualizar
@@ -34,19 +34,19 @@ def ingresar(usu):
 def mostrarTodos():
     try:
         con = Conexion(host, user, password, db)
-        sql = "select * from usuarios"
+        sql = "select * from usuario"
         cursor = con.ejecuta_query(sql)
         datos = cursor.fetchall()  # Esto devuelve todas las consultas/datos
         con.desconectar()
         return datos
     except Exception as e:
-        print("Erorr al Mostrar Todos:{}".format(e))
+        print("Error al Mostrar Todos:{}".format(e))
 
 
 def mostrarParticular(id):
     try:
         con = Conexion(host, user, password, db)
-        sql = "select * from usuarios where idUsuario = {}".format(id)
+        sql = "select * from usuario where id_usuario = {}".format(id)
         cursor = con.ejecuta_query(sql)
         dato = cursor.fetchone()  # Esto devuelve solo un
         con.desconectar()
@@ -58,7 +58,7 @@ def mostrarParticular(id):
 def mostrarParcial(cant):
     try:
         con = Conexion(host, user, password, db)
-        sql = "select * from usuarios"
+        sql = "select * from usuario"
         cursor = con.ejecuta_query(sql)
         datos = cursor.fetchmany(size=cant)
         con.desconectar()
@@ -70,9 +70,9 @@ def mostrarParcial(cant):
 def modificar(usu):
     try:
         con = Conexion(host, user, password, db)
-        sql = "INSERT INTO usuarios SET nombre = '{}', apellido = '{}', nombreUsuario = '{}', " \
-            "rut = '{}', rol = '{}', email = '{}', contraseña = '{}' where idUsuario  = {}". \
-            format(usu[1], usu[2], usu[3], usu[4], usu[5], usu[6], usu[7], usu[0])
+        sql = "INSERT INTO usuario SET rut = '{}', nombre_completo = '{}', email = '{}', " \
+            "password = '{}', estado = 1 where id_usuario  = {}". \
+            format(usu[1], usu[2], usu[3], usu[4], usu[0])
         con.ejecuta_query(sql)
         con.commit()
         input("\n\nDatos Modificados con Éxito :)")
@@ -85,7 +85,7 @@ def modificar(usu):
 def eliminar(id):
     try:
         con = Conexion(host, user, password, db)
-        sql = "delete from usuarios where idUsuario  = {}".format(id)
+        sql = "delete from usuario where id_usuario  = {}".format(id)
         con.ejecuta_query(sql)
         con.commit()
         input("\n\nUsuario Eliminado con Éxito :)")
