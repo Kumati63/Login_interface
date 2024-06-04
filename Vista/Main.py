@@ -1,6 +1,8 @@
 #import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
+from tkinter import Canvas
+from PIL import ImageTk, Image
 import random
 import os
 from DTO.Varios import hash_md5
@@ -17,7 +19,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     login_window.geometry("800x450")
     login_window.config(bg="white")
 
-    Frame_left = Frame(login_window, width=400, height=430, bg="green")
+    Frame_left = Frame(login_window, width=400, height=430, bg="white")
     Frame_left.grid(row=0, column=0)
 
     Frame_right = Frame(login_window, width=400, height=430, bg="white")
@@ -61,10 +63,24 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     def Forgot_password():
         print("forgot password")
 
+    # Step 3: Load the image using PIL
+    image_path = r"D:\Users\matii\OneDrive\Documentos\GitHub\Login_interface\newimage.png"  # Replace with your image path
+    image = Image.open(image_path)
+    photo = ImageTk.PhotoImage(image)
+
+    # Step 4: Create a Canvas widget and add the image to it
+    canvas = Canvas(Frame_left, width=400, height=400)
+    canvas.pack()
+
+    # Add the image to the canvas
+    canvas.create_image(0, 0, anchor=NW, image=photo)
+
+    # Keep a reference to avoid garbage collection
+    canvas.image = photo
 
     Header = Label(Frame_up, text="LOGIN", font=('Poppins', 23, "bold"), bg="white").place(x=40, y=20)
 
-    line = Label(Frame_up, width=40, text="", height=1, bg="#3fb5a3", anchor=NW)
+    line = Label(Frame_up, width=40, text="", height=1, bg="#007dfe", anchor=NW)
     line.place(x=35, y=65)
 
     Email_label = Label(Frame_down, text='Email',font=('calibre', 11, 'bold'), bg="white").place(x=70, y=45)
@@ -105,9 +121,9 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                     text='Submit',
                     font=('calibre', 10, 'bold'),
                     width=15,
-                    bg="#3fb5a3",
+                    bg="#007dfe",
                     fg="white",
-                    activebackground="#47DFC8",
+                    activebackground="#1E78D5",
                     activeforeground="white",
                     command=submit).place(x=125, y=195)
 
@@ -115,9 +131,9 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                     text='return',
                     font=('calibre', 10, 'bold'),
                     width=10,
-                    bg="#3fb5a3",
+                    bg="#007dfe",
                     fg="white",
-                    activebackground="#47DFC8",
+                    activebackground="#1E78D5",
                     activeforeground="white",
                     command=return_principal).place(x=35, y=320)
 
@@ -125,9 +141,9 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                         text=' Help? ',
                         font=('calibre', 10, 'bold'),
                         width=8,
-                        bg="#3fb5a3",
+                        bg="#007dfe",
                         fg="white",
-                        activebackground="#47DFC8",
+                        activebackground="#1E78D5",
                         activeforeground="white",
                         command=Help_function).place(x=305, y=320)
 
