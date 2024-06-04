@@ -1,6 +1,8 @@
 #import tkinter as tk
 from tkinter import *
 from tkinter import messagebox
+import random
+import os
 from DTO.Varios import hash_md5
 
 def Login():# Esta función se ejecutará cuando se presione el botón
@@ -20,11 +22,15 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     Frame_down = Frame(login_window, width=400, height=380, bg="white")
     Frame_down.grid(row=1, column=0)
 
+    def return_principal():
+        print("Return Principal")
+
     # declaring string variable
     # for storing name and password
     Email_var = StringVar()
     passw_var = StringVar()
-
+    def Help_function():
+        print("Help")
     # defining a function that will
     # get the name and password and
     # print them on the screen
@@ -32,19 +38,20 @@ def Login():# Esta función se ejecutará cuando se presione el botón
 
         Email = Email_var.get()
         password = passw_var.get()
-
-        if Email and password:
-            messagebox.showinfo("message", "Welcome")
+        if len(Email) == 0:
+            messagebox.showinfo("Warning", "Please fill the email field")
+        elif len(password) == 0:
+            messagebox.showinfo("Warning", "Please fill the password field")
         else:
-            messagebox.showinfo("Warning", "Please fill all the fields")
+            Email = Email_var.get()
+            password = hash_md5(passw_var.get())
+            print(Email)
+            print(password)
 
-        Email = Email_var.get()
-        password = hash_md5(passw_var.get())
-        print (Email)
-        print(password)
-    def F_password():
-        if 1==1:
-            print("Please enter")
+
+
+    def Forgot_password():
+        print("forgot password")
 
 
     Header = Label(Frame_up, text="LOGIN", font=('Poppins', 23, "bold"), bg="white").place(x=40, y=20)
@@ -66,7 +73,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     passw_label = Label(Frame_down, text='Password', font=('calibre', 11, 'bold'), bg="white").place(x=65, y=118)
     pass_F = Button(Frame_down,
                     text='Forgot Password',
-                    command=F_password,
+                    command=Forgot_password,
                     font=('calibre', 9, 'bold'),
                     activebackground="White",
                     activeforeground="#4641FF",
@@ -87,14 +94,34 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     # creating a button using the widget
     # Button that will call the submit function
     sub_btn = Button(Frame_down,
-                     text='Submit',
-                     font=('calibre', 10, 'bold'),
-                     width=15,
-                     bg="#3fb5a3",
-                     fg="white",
-                     activebackground="#47DFC8",
-                     activeforeground="white",
-                     command=submit).place(x=125, y=195)
+                    text='Submit',
+                    font=('calibre', 10, 'bold'),
+                    width=15,
+                    bg="#3fb5a3",
+                    fg="white",
+                    activebackground="#47DFC8",
+                    activeforeground="white",
+                    command=submit).place(x=125, y=195)
+
+    return_btn = Button(Frame_down,
+                    text='return',
+                    font=('calibre', 10, 'bold'),
+                    width=10,
+                    bg="#3fb5a3",
+                    fg="white",
+                    activebackground="#47DFC8",
+                    activeforeground="white",
+                    command=return_principal).place(x=35, y=320)
+
+    help_btn = Button(Frame_down,
+                        text=' Help? ',
+                        font=('calibre', 10, 'bold'),
+                        width=8,
+                        bg="#3fb5a3",
+                        fg="white",
+                        activebackground="#47DFC8",
+                        activeforeground="white",
+                        command=Help_function).place(x=305, y=320)
 
 
 def Sign_up():
