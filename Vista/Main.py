@@ -1,5 +1,7 @@
 #import tkinter as tk
 from tkinter import *
+from tkinter import messagebox
+from DTO.Varios import hash_md5
 
 def Login():# Esta función se ejecutará cuando se presione el botón
 
@@ -27,15 +29,19 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     # get the name and password and
     # print them on the screen
     def submit():
+
         Email = Email_var.get()
         password = passw_var.get()
 
-        print("The name is : " + Email)
-        print("The password is : " + password)
+        if Email and password:
+            messagebox.showinfo("message", "Welcome")
+        else:
+            messagebox.showinfo("Warning", "Please fill all the fields")
 
-        Email_var.set("")
-        passw_var.set("")
-
+        Email = Email_var.get()
+        password = hash_md5(passw_var.get())
+        print (Email)
+        print(password)
     def F_password():
         if 1==1:
             print("Please enter")
@@ -48,7 +54,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
 
     Email_label = Label(Frame_down, text='Email',font=('calibre', 11, 'bold'), bg="white").place(x=70, y=45)
 
-    name_entry = Entry(Frame_down,
+    Email_entry = Entry(Frame_down,
                        textvariable=Email_var,
                        font=('calibre', 17, 'normal'),
                        bg="white",
@@ -60,7 +66,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     passw_label = Label(Frame_down, text='Password', font=('calibre', 11, 'bold'), bg="white").place(x=65, y=118)
     pass_F = Button(Frame_down,
                     text='Forgot Password',
-                    command=F_password(),
+                    command=F_password,
                     font=('calibre', 9, 'bold'),
                     activebackground="White",
                     activeforeground="#4641FF",
@@ -88,11 +94,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                      fg="white",
                      activebackground="#47DFC8",
                      activeforeground="white",
-                     command=submit()).place(x=125, y=195)
-
-    # placing the label and entry in
-    # the required position using grid
-    # method
+                     command=submit).place(x=125, y=195)
 
 
 def Sign_up():
