@@ -31,9 +31,6 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     Frame_down = Frame(Frame_right, width=400, height=380, bg="white")
     Frame_down.grid(row=1, column=1)
 
-    def return_principal():
-        print("Return Principal")
-
     # declaring string variable
     # for storing name and password
     Email_var = StringVar()
@@ -86,11 +83,11 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     Email_label = Label(Frame_down, text='Email',font=('calibre', 11, 'bold'), bg="white").place(x=70, y=45)
 
     Email_entry = Entry(Frame_down,
-                       textvariable=Email_var,
-                       font=('calibre', 17, 'normal'),
-                       bg="white",
-                       borderwidth=2,
-                       width=20).place(x=55, y=70)
+                    textvariable=Email_var,
+                    font=('calibre', 17, 'normal'),
+                    bg="white",
+                    borderwidth=2,
+                    width=20).place(x=55, y=70)
     #if name_entry=='':
 
     #   creating a label for password
@@ -108,12 +105,12 @@ def Login():# Esta función se ejecutará cuando se presione el botón
 
     # creating an entry for password
     passw_entry = Entry(Frame_down,
-                        textvariable=passw_var,
-                        font=('calibre', 17, 'normal'),
-                        show='*',
-                        borderwidth=2,
-                        bg="white",
-                        width=20).place(x=55, y=145)
+                    textvariable=passw_var,
+                    font=('calibre', 17, 'normal'),
+                    show='*',
+                    borderwidth=2,
+                    bg="white",
+                    width=20).place(x=55, y=145)
 
     # creating a button using the widget
     # Button that will call the submit function
@@ -135,18 +132,21 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                     fg="white",
                     activebackground="#1E78D5",
                     activeforeground="white",
-                    command=return_principal).place(x=35, y=320)
+                    command=return_to_main).place(x=35, y=320)
 
     help_btn = Button(Frame_down,
-                        text=' Help? ',
-                        font=('calibre', 10, 'bold'),
-                        width=8,
-                        bg="#007dfe",
-                        fg="white",
-                        activebackground="#1E78D5",
-                        activeforeground="white",
-                        command=Help_function).place(x=305, y=320)
+                    text=' Help? ',
+                    font=('calibre', 10, 'bold'),
+                    width=8,
+                    bg="#007dfe",
+                    fg="white",
+                    activebackground="#1E78D5",
+                    activeforeground="white",
+                    command=Help_function).place(x=305, y=320)
 
+def return_to_main():
+    login_window.withdraw()
+    root.deiconify() #restaurar la ventana principal
 
 def Sign_up():
     root.withdraw()
@@ -255,6 +255,7 @@ def User_interface():
     User_interface.config(bg="white")
 
 # crear ventana principal de la interfaz
+global root
 root = Tk()
 # agegarle un nombre a la ventana
 root.title("menu principal")
@@ -265,32 +266,36 @@ root.config(padx=30, pady=30)
 
 # Colocar un botón en la interfaz con el nombre 'Login'
 boton_Login = Button(root,
-                        text="Login",
-                        command=Login,
-                        width=10,
-                        height=2,
-                        font=("Arial", 12),
-                        cursor="hand2",
-                        justify="center",
-                        padx=10,
-                        pady=5
-                        )
-# agregar el boton a la ventana principal
-boton_Login.pack(padx=20, pady=20)
+                    text="Login",
+                    command=Login,
+                    width=10,
+                    height=2,
+                    font=('calibre', 9, 'bold'),
+                    cursor="hand2",
+                    justify="center",
+                    activebackground="#1E78D5",
+                    activeforeground="white",
+                    bg="#007dfe",
+                    fg="white",
+                    highlightthickness = 0,
+                    padx=10,
+                    pady=5).pack(padx=20, pady=20)
 
 # Creando un botón en la interfaz con el nombre 'Sign up'
 boton_Sign_up = Button(root,
-                        text="Sign up",
-                        command=Sign_up,
-                        width=10,
-                        height=2,
-                        font=("Arial", 12),
-                        cursor="hand2",
-                        justify="center",
-                        padx=10,
-                        pady=5
-                        )
-# agregar el boton a la ventana principal
-boton_Sign_up.pack(padx=20, pady=20)
+                    text="Sign up",
+                    command=Sign_up,
+                    width=10,
+                    height=2,
+                    font=('calibre', 9, 'bold'),
+                    cursor="hand2",
+                    justify="center",
+                    activebackground="#1E78D5",
+                    activeforeground="white",
+                    bg="#007dfe",
+                    fg="white",
+                    highlightthickness=0,
+                    padx=10,
+                    pady=5).pack(padx=20, pady=20)
 
 root.mainloop()
