@@ -61,7 +61,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         print("forgot password")
 
     # Step 3: Load the image using PIL
-    image_path = r"D:\Users\matii\OneDrive\Documentos\GitHub\Login_interface\newimage.png"  # Replace with your image path
+    image_path = image_path = os.path.join(os.path.dirname(__file__), '..', 'img', 'newimage.png')  # Replace with your image path
     image = Image.open(image_path)
     photo = ImageTk.PhotoImage(image)
 
