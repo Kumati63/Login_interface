@@ -11,16 +11,23 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     root.withdraw()
 
     # crear nueva ventana para el Login
+    global login_window
     login_window = Toplevel(root)
     login_window.title("Log In")
-    login_window.geometry("400x450")
+    login_window.geometry("800x450")
     login_window.config(bg="white")
 
-    Frame_up = Frame(login_window, width=400, height=70, bg="white")
-    Frame_up.grid(row=0, column=0)
+    Frame_left = Frame(login_window, width=400, height=430, bg="green")
+    Frame_left.grid(row=0, column=0)
 
-    Frame_down = Frame(login_window, width=400, height=380, bg="white")
-    Frame_down.grid(row=1, column=0)
+    Frame_right = Frame(login_window, width=400, height=430, bg="white")
+    Frame_right.grid(row=0, column=1)
+
+    Frame_up = Frame(Frame_right, width=400, height=70, bg="white")
+    Frame_up.grid(row=0, column=1)
+
+    Frame_down = Frame(Frame_right, width=400, height=380, bg="white")
+    Frame_down.grid(row=1, column=1)
 
     def return_principal():
         print("Return Principal")
@@ -47,6 +54,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
             password = hash_md5(passw_var.get())
             print(Email)
             print(password)
+            User_interface()
 
 
 
