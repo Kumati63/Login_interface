@@ -130,6 +130,16 @@ def Sign_up():
     Sign_up_window.title("Sign up")
     Sign_up_window.minsize(width=600, height=400)
 
+def User_interface():
+    # vamos a ocultar la ventana principal
+    login_window.withdraw()
+
+    # crear nueva ventana para el Login
+    User_interface = Toplevel(login_window)
+    User_interface.title("User_interface")
+    User_interface.geometry("400x450")
+    User_interface.config(bg="white")
+
 # crear ventana principal de la interfaz
 root = Tk()
 # agegarle un nombre a la ventana
