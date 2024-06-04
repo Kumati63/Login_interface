@@ -128,6 +128,102 @@ def Sign_up():
     root.withdraw()
     ventana = Toplevel(root)
     ventana.title("Sign up")
+    ventana.geometry("650x450")
+    ventana.configure(bg="white")
+
+    def validate_length(new_value):
+        max_length = 25
+        if len(new_value) > max_length:
+            return False
+        return True
+
+    def validar_contraseña():
+        password1 = password_var.get()
+        password2 = password2_pass_var.get()
+
+        if password1 != password2:
+            messagebox.showwarning("Advertencia", "Las contraseñas no coinciden")
+            return False
+        else:
+            return True
+
+    usuario_var = StringVar()
+    password_var = StringVar()
+    correo_var = StringVar()
+    password2_pass_var = StringVar()
+
+    def boton_guardar():
+        if validar_contraseña():
+            usuario = usuario_var.get()
+            correo = correo_var.get()
+            password = password_var.get()
+            password2_pass = password2_pass_var.get()
+
+            if len(usuario) == 0:
+                messagebox.showinfo("Warning", "por favor llenar el campo: usuario")
+            elif len(correo) == 0:
+                messagebox.showinfo("Warning", "por favor llenar el campo: correo")
+            elif len(password) == 0:
+                messagebox.showinfo("Warning", "Por favor llenar el campo: contraseña")
+            elif len(password2_pass) == 0:
+                messagebox.showinfo("Warning", "por favor llenar el campo: repetir contraseña")
+            else:
+                password_hash = hash_md5(password)
+                print(password_hash)
+                print(usuario)
+                print(correo)
+                print(password)
+                print(password2_pass)
+
+                messagebox.showinfo("Creación de Usuario", "Datos almacenados con éxito")
+
+    # Registra la función de validación
+    validate_cmd = ventana.register(validate_length)
+
+    frame_cabecera = Frame(ventana, bg="white")
+    frame_cabecera.grid(row=0, column=1, columnspan=1, padx=10, pady=10)
+    cabecera = Label(frame_cabecera, text="Introduzca los datos solicitados", font=('Poppins', 18, "bold"), bg="white",anchor="center")
+    cabecera.pack()
+
+    """line = Label(ventana, width=30, text="", height=1, bg="#3fb5a3", anchor=NW)
+    line.grid(row=1, column=1, columnspan=1, padx=10, pady=5)"""
+
+    frame_contenido = Frame(ventana, bg="white")
+    frame_contenido.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+
+    # Etiquetas y campos de entrada dentro del frame de contenido
+    usuario_label = Label(frame_contenido, text="USUARIO", font=('calibre', 11, 'bold'), bg="white")
+    usuario_label.grid(row=0, column=0, padx=30, pady=10, sticky="e")
+    usuario = Entry(frame_contenido, width=25, validate="key", textvariable=usuario_var,validatecommand=(validate_cmd, '%P'), font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
+    usuario.grid(row=0, column=1, padx=10, pady=10)
+
+    correo_label = Label(frame_contenido, text="CORREO", font=('calibre', 11, 'bold'), bg="white")
+    correo_label.grid(row=1, column=0, padx=30, pady=10, sticky="e")
+    correo = Entry(frame_contenido, width=25, validate="key", textvariable=correo_var,validatecommand=(validate_cmd, '%P'), font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
+    correo.grid(row=1, column=1, padx=10, pady=10)
+
+    password_label = Label(frame_contenido, text="CONTRASEÑA", font=('calibre', 11, 'bold'), bg="white")
+    password_label.grid(row=2, column=0, padx=30, pady=10, sticky="e")
+    password = Entry(frame_contenido, width=25, show="*", validate="key", textvariable=password_var,validatecommand=(validate_cmd, '%P'), font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
+    password.grid(row=2, column=1, padx=10, pady=10)
+
+    password2_label = Label(frame_contenido, text="REPETIR CONTRASEÑA", font=('calibre', 11, 'bold'), bg="white")
+    password2_label.grid(row=3, column=0, padx=30, pady=10, sticky="e")
+    password2_pass = Entry(frame_contenido, width=25, show="*", validate="key", textvariable=password2_pass_var,validatecommand=(validate_cmd, '%P'), font=('calibre', 17, 'normal'), bg="white",borderwidth=2)
+    password2_pass.grid(row=3, column=1, padx=10, pady=10)
+
+    frame_botones = Frame(ventana, bg="white")
+    frame_botones.grid(row=4, column=1, padx=10, pady=10)
+
+    boton = Button(frame_botones, text="Guardar", font=('calibre', 10, 'bold'), width=15, bg="#3fb5a3", fg="white",activebackground="#47DFC8", activeforeground="white", command=boton_guardar)
+    boton.grid(row=0, column=0, padx=10, pady=20)
+
+    boton2 = Button(frame_botones, text="Cancelar", font=('calibre', 10, 'bold'), width=15, bg="#3fb5a3", fg="white",activebackground="#47DFC8", activeforeground="white")
+    boton2.grid(row=0, column=1, padx=10, pady=20)
+"""def Sign_up():
+    root.withdraw()
+    ventana = Toplevel(root)
+    ventana.title("Sign up")
     ventana.geometry("450x420")
 
     def validate_length(new_value):
@@ -151,6 +247,7 @@ def Sign_up():
     correo_var = StringVar()
     password2_pass_var = StringVar()
 
+
     def boton_guardar():
         if validar_contraseña():
             usuario = usuario_var.get()
@@ -158,7 +255,7 @@ def Sign_up():
             password = password_var.get()
             password2_pass = password2_pass_var.get()
 
-            """if len(usuario) == 0:
+            if len(usuario) == 0:
                 messagebox.showinfo("Warning", "por favor llenar el campo: usuario")
             elif len(correo) == 0:
                 messagebox.showinfo("Warning", "por favor llenar el campo: correo")
@@ -166,16 +263,15 @@ def Sign_up():
                 messagebox.showinfo("Warning", "Por favor llenar el campo: contraseña")
             elif len(password2_pass) == 0:
                 messagebox.showinfo("Warning", "por favor llenar el campo: repetir contraseña")
-            else:"""
-            password_hash = hash_md5(password)
-            print(password_hash)
-            print(usuario)
-            print(correo)
-            print(password)
-            print(password2_pass)
+            else:
+                password_hash = hash_md5(password)
+                print(password_hash)
+                print(usuario)
+                print(correo)
+                print(password)
+                print(password2_pass)
 
-            messagebox.showinfo("Creación de Usuario", "Datos almacenados con éxito")
-
+                messagebox.showinfo("Creación de Usuario", "Datos almacenados con éxito")
 
     # Registra la función de validación
     validate_cmd = ventana.register(validate_length)
@@ -191,22 +287,22 @@ def Sign_up():
     # Etiquetas y campos de entrada dentro del frame de contenido
     usuario_label = Label(frame_contenido, text="USUARIO")
     usuario_label.grid(row=0, column=0, padx=30, pady=10, sticky="e")
-    usuario = Entry(frame_contenido, width=25, validate="key",textvariable="usuario_var", validatecommand=(validate_cmd, '%P'))
+    usuario = Entry(frame_contenido, width=25, validate="key",textvariable=usuario_var, validatecommand=(validate_cmd, '%P'))
     usuario.grid(row=0, column=1, padx=10, pady=10)
 
     correo_label = Label(frame_contenido, text="CORREO")
     correo_label.grid(row=1, column=0, padx=30, pady=10, sticky="e")
-    correo = Entry(frame_contenido, width=25, validate="key",textvariable="correo_var", validatecommand=(validate_cmd, '%P'))
+    correo = Entry(frame_contenido, width=25, validate="key",textvariable=correo_var, validatecommand=(validate_cmd, '%P'))
     correo.grid(row=1, column=1, padx=10, pady=10)
 
     password_label = Label(frame_contenido, text="CONTRASEÑA")
     password_label.grid(row=2, column=0, padx=30, pady=10, sticky="e")
-    password = Entry(frame_contenido, width=25, show="*", validate="key",textvariable="password_var", validatecommand=(validate_cmd, '%P'))
+    password = Entry(frame_contenido, width=25, show="*", validate="key",textvariable=password_var, validatecommand=(validate_cmd, '%P'))
     password.grid(row=2, column=1, padx=10, pady=10)
 
     password2_label = Label(frame_contenido, text="REPETIR CONTRASEÑA")
     password2_label.grid(row=3, column=0, padx=30, pady=10, sticky="e")
-    password2_pass = Entry(frame_contenido, width=25, show="*", validate="key",textvariable="password2_pass_var", validatecommand=(validate_cmd, '%P'))
+    password2_pass = Entry(frame_contenido, width=25, show="*", validate="key",textvariable=password2_pass_var, validatecommand=(validate_cmd, '%P'))
     password2_pass.grid(row=3, column=1, padx=10, pady=10)
 
     frame_botones = Frame(ventana)
@@ -218,7 +314,7 @@ def Sign_up():
     boton.grid(row=0, column=0, padx=10, pady=20)
 
     boton2 = Button(frame_botones, text="Cancelar")
-    boton2.grid(row=0, column=1, padx=10, pady=20)
+    boton2.grid(row=0, column=1, padx=10, pady=20)"""
 
 def User_interface():
     # vamos a ocultar la ventana principal
