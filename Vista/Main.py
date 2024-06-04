@@ -239,10 +239,10 @@ def Sign_up():
     frame_botones = Frame(ventana, bg="white")
     frame_botones.grid(row=4, column=1, padx=10, pady=10)
 
-    boton = Button(frame_botones, text="Guardar", font=('calibre', 10, 'bold'), width=15, bg="#3fb5a3", fg="white",activebackground="#47DFC8", activeforeground="white", command=boton_guardar)
+    boton = Button(frame_botones, text="Guardar", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white",activebackground="#1E78D5", activeforeground="white", command=boton_guardar)
     boton.grid(row=0, column=0, padx=10, pady=20)
 
-    boton2 = Button(frame_botones, text="Cancelar", font=('calibre', 10, 'bold'), width=15, bg="#3fb5a3", fg="white",activebackground="#47DFC8", activeforeground="white")
+    boton2 = Button(frame_botones, text="Cancelar", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white",activebackground="#1E78D5", activeforeground="white")
     boton2.grid(row=0, column=1, padx=10, pady=20)
 def User_interface():
     # vamos a ocultar la ventana principal
