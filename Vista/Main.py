@@ -47,7 +47,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                        (Email_usu, password_usu))
 
         usuario = sql_login.fetchone()
-        
+
         conexion.close()
 
         if usuario:
@@ -224,7 +224,7 @@ def cambiar_contra():
         else:
             return True
 
-    def boton_guardar():
+    def boton_guardar2():
         if validar_contraseña():
             # info para almacenar en bd
             messagebox.showinfo("Creación de Usuario", "Datos almacenados con éxito")
@@ -253,7 +253,7 @@ def cambiar_contra():
     password2_pass = Entry(frame_contenido, width=25, show="*", validate="key", validatecommand=(validate_cmd, '%P'),font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
     password2_pass.grid(row=1, column=1, padx=10, pady=10)
 
-    boton = Button(frame_contenido, text="verificar", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5",fg="white", activebackground="#1E78D5", activeforeground="white", command=boton_guardar)
+    boton = Button(frame_contenido, text="verificar", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5",fg="white", activebackground="#1E78D5", activeforeground="white", command=boton_guardar2)
     boton.grid(row=2, column=1, padx=1, pady=20)
 
 
@@ -302,6 +302,9 @@ def recuperar_contra():
 
     boton2 = Button(frame_contenido, text="Verificar Código", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white", activebackground="#1E78D5", activeforeground="white", command = from_signup_to_login)
     boton2.grid(row=3, column=1, padx=1, pady=20)
+
+
+
 
 def Sign_up():
     root.withdraw()
@@ -355,8 +358,22 @@ def Sign_up():
                 print(password)
                 print(password2_pass)
 
-                messagebox.showinfo("Creación de Usuario", "Datos almacenados con éxito")
+                """conexion = pymysql.connect(
+                    host='localhost',
+                    user='root',
+                    password='',
+                    db='login_interface'
+                )
+                sql_signup = conexion.cursor()
+                sql_signup.execute(
+                    "INSERT INTO usuario SET nombre_completo = %s, email = %s, password = %s, estado = 1",
+                    (usuario, correo, password_hash))
+
+                conexion.close()"""
+
+                messagebox.showinfo("Éxito", "Datos de usuario ingresados correctamente")
                 from_signup_to_login()
+
 
     # Registra la función de validación
     validate_cmd = ventana_registro.register(validate_length)
