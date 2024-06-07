@@ -187,6 +187,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                     activeforeground="white",
                     command=Help_function).place(x=305, y=320)
 
+
 def return_to_main_from_login():
     login_window.withdraw()
     root.deiconify() #restaurar la ventana principal
@@ -197,7 +198,7 @@ def return_to_main_from_signup():
 
 def from_signup_to_login():
     ventana_registro.withdraw()
-    login_window.deiconify()
+    root.deiconify()
 
 def from_recuperarContra_to_main():
     ventana_contra.withdraw()
@@ -241,9 +242,6 @@ def cambiar_contra():
     cabecera = Label(frame_cabecera, text="Recuperacion de contraseña", font=('Poppins', 18, "bold"), bg="white",
                         anchor="center")
     cabecera.pack()
-
-    """line = Label(ventana, width=30, text="", height=1, bg="#3fb5a3", anchor=NW)
-    line.grid(row=1, column=1, columnspan=1, padx=10, pady=5)"""
 
     frame_contenido = Frame(ventana_contra, bg="white")
     frame_contenido.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
@@ -308,7 +306,7 @@ def recuperar_contra():
     codigo = Entry(frame_contenido, width=25, validate="key", validatecommand=(validate_cmd, '%P'), font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
     codigo.grid(row=2, column=1, padx=10, pady=10)
 
-    boton2 = Button(frame_contenido, text="Verificar Código", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white", activebackground="#1E78D5", activeforeground="white", command = from_signup_to_login)
+    boton2 = Button(frame_contenido, text="Verificar Código", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white", activebackground="#1E78D5", activeforeground="white")
     boton2.grid(row=3, column=1, padx=1, pady=20)
 
 
@@ -366,7 +364,7 @@ def Sign_up():
                 print(password)
                 print(password2_pass)
 
-                """conexion = pymysql.connect(
+                conexion = pymysql.connect(
                     host='localhost',
                     user='root',
                     password='',
@@ -377,7 +375,7 @@ def Sign_up():
                     "INSERT INTO usuario SET nombre_completo = %s, email = %s, password = %s, estado = 1",
                     (usuario, correo, password_hash))
 
-                conexion.close()"""
+                conexion.close()
 
                 messagebox.showinfo("Éxito", "Datos de usuario ingresados correctamente")
                 from_signup_to_login()
@@ -390,9 +388,6 @@ def Sign_up():
     frame_cabecera.grid(row=0, column=1, columnspan=1, padx=10, pady=10)
     cabecera = Label(frame_cabecera, text="Introduzca los datos solicitados", font=('Poppins', 18, "bold"), bg="white",anchor="center")
     cabecera.pack()
-
-    """line = Label(ventana, width=30, text="", height=1, bg="#3fb5a3", anchor=NW)
-    line.grid(row=1, column=1, columnspan=1, padx=10, pady=5)"""
 
     frame_contenido = Frame(ventana_registro, bg="white")
     frame_contenido.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
