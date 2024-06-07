@@ -62,7 +62,6 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     # vamos a ocultar la ventana principal
     root.withdraw()
 
-    ventana_registro.withdraw()
     # crear nueva ventana para el Login
     global login_window
     login_window = Toplevel(root)
@@ -88,9 +87,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     passw_var = StringVar()
     def Help_function():
         print("Help")
-    # defining a function that will
-    # get the name and password and
-    # print them on the screen
+
     def submit():
 
         Email = Email_var.get()
@@ -105,8 +102,6 @@ def Login():# Esta función se ejecutará cuando se presione el botón
             print(Email)
             print(password)
             verificar_credenciales()
-
-
 
     def Forgot_password():
         recuperar_contra()
@@ -203,9 +198,9 @@ def return_to_main_from_signup():
     ventana_registro.withdraw()
     root.deiconify() #restaurar la ventana principal
 
-def return_to_login():
+def from_signup_to_login():
     ventana_registro.withdraw()
-    root.deiconify()
+    login_window.deiconify()
 
 def cambiar_contra():
     root.withdraw()
@@ -263,6 +258,8 @@ def cambiar_contra():
 
     boton = Button(frame_contenido, text="verificar", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5",fg="white", activebackground="#1E78D5", activeforeground="white", command=boton_guardar)
     boton.grid(row=2, column=1, padx=1, pady=20)
+
+
 def recuperar_contra():
     root.withdraw()
     ventana = Toplevel(root)
@@ -306,8 +303,9 @@ def recuperar_contra():
     usuario = Entry(frame_contenido, width=25, validate="key", validatecommand=(validate_cmd, '%P'), font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
     usuario.grid(row=2, column=1, padx=10, pady=10)
 
-    boton2 = Button(frame_contenido, text="Verificar Código", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white", activebackground="#1E78D5", activeforeground="white", command = return_to_main_from_signup)
+    boton2 = Button(frame_contenido, text="Verificar Código", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white", activebackground="#1E78D5", activeforeground="white", command = from_signup_to_login)
     boton2.grid(row=3, column=1, padx=1, pady=20)
+
 def Sign_up():
     root.withdraw()
     global ventana_registro
@@ -361,7 +359,7 @@ def Sign_up():
                 print(password2_pass)
 
                 messagebox.showinfo("Creación de Usuario", "Datos almacenados con éxito")
-                Login()
+                from_signup_to_login()
 
     # Registra la función de validación
     validate_cmd = ventana_registro.register(validate_length)
