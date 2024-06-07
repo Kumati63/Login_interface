@@ -62,6 +62,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     # vamos a ocultar la ventana principal
     root.withdraw()
 
+    ventana_registro.withdraw()
     # crear nueva ventana para el Login
     global login_window
     login_window = Toplevel(root)
@@ -198,6 +199,11 @@ def return_to_main():
     login_window.withdraw()
     root.deiconify() #restaurar la ventana principal
 
+def return_to_login():
+    ventana_registro.withdraw()
+    root.deiconify()
+
+
 def recuperar_contra():
     root.withdraw()
     ventana = Toplevel(root)
@@ -245,10 +251,11 @@ def recuperar_contra():
     boton2.grid(row=3, column=1, padx=1, pady=20)
 def Sign_up():
     root.withdraw()
-    ventana = Toplevel(root)
-    ventana.title("Sign up")
-    ventana.geometry("650x450")
-    ventana.configure(bg="white")
+    global ventana_registro
+    ventana_registro = Toplevel(root)
+    ventana_registro.title("Sign up")
+    ventana_registro.geometry("650x450")
+    ventana_registro.configure(bg="white")
 
     def validate_length(new_value):
         max_length = 25
@@ -295,11 +302,12 @@ def Sign_up():
                 print(password2_pass)
 
                 messagebox.showinfo("Creación de Usuario", "Datos almacenados con éxito")
+                Login()
 
     # Registra la función de validación
-    validate_cmd = ventana.register(validate_length)
+    validate_cmd = ventana_registro.register(validate_length)
 
-    frame_cabecera = Frame(ventana, bg="white")
+    frame_cabecera = Frame(ventana_registro, bg="white")
     frame_cabecera.grid(row=0, column=1, columnspan=1, padx=10, pady=10)
     cabecera = Label(frame_cabecera, text="Introduzca los datos solicitados", font=('Poppins', 18, "bold"), bg="white",anchor="center")
     cabecera.pack()
@@ -307,7 +315,7 @@ def Sign_up():
     """line = Label(ventana, width=30, text="", height=1, bg="#3fb5a3", anchor=NW)
     line.grid(row=1, column=1, columnspan=1, padx=10, pady=5)"""
 
-    frame_contenido = Frame(ventana, bg="white")
+    frame_contenido = Frame(ventana_registro, bg="white")
     frame_contenido.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
 
     # Etiquetas y campos de entrada dentro del frame de contenido
@@ -331,13 +339,13 @@ def Sign_up():
     password2_pass = Entry(frame_contenido, width=25, show="*", validate="key", textvariable=password2_pass_var,validatecommand=(validate_cmd, '%P'), font=('calibre', 17, 'normal'), bg="white",borderwidth=2)
     password2_pass.grid(row=3, column=1, padx=10, pady=10)
 
-    frame_botones = Frame(ventana, bg="white")
+    frame_botones = Frame(ventana_registro, bg="white")
     frame_botones.grid(row=4, column=1, padx=10, pady=10)
 
     boton = Button(frame_botones, text="Guardar", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white",activebackground="#1E78D5", activeforeground="white", command=boton_guardar)
     boton.grid(row=0, column=0, padx=10, pady=20)
 
-    boton2 = Button(frame_botones, text="Cancelar", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white",activebackground="#1E78D5", activeforeground="white")
+    boton2 = Button(frame_botones, text="Cancelar", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white",activebackground="#1E78D5", activeforeground="white",command=return_to_main)
     boton2.grid(row=0, column=1, padx=10, pady=20)
 def User_interface():
     # vamos a ocultar la ventana principal
