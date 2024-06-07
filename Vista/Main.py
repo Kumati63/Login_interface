@@ -41,12 +41,12 @@ def Login():# Esta función se ejecutará cuando se presione el botón
             password='',
             db='login_interface'
         )
-        cursor = conexion.cursor()
+        sql_login = conexion.cursor()
 
-        cursor.execute("SELECT email, password FROM usuario WHERE email = %s AND password = %s",
+        sql_login.execute("SELECT email, password FROM usuario WHERE email = %s AND password = %s",
                        (Email_usu, password_usu))
 
-        usuario = cursor.fetchone()
+        usuario = sql_login.fetchone()
 
         print("--------------------------------")
         print(Email_usu)
