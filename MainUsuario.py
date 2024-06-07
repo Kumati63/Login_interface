@@ -23,12 +23,6 @@ def ingresarDatos():
     print("=========================")
     print(" 1.- INGRESAR DATOS USUARIO")
     print("=========================")
-    while True:
-        rut = input("Ingrese un RUT: ")
-        if Varios.valida_rut(rut):
-            break
-        else:
-            print("\nEl RUT ingresado no es Válido :(")
     # Se da inicio a la solicitud de los datos del uauario
     nombre = input("Ingrese su Nombre Completo: ")
     email = input("ngrese su Correo Electronico")
@@ -44,7 +38,7 @@ def ingresarDatos():
     estado = 1
 
     # Creamos al objeto de tipo Usuario
-    usu = usuario.usuario(rut, nombre, email, password, estado)
+    usu = usuario.usuario(nombre, email, password, estado)
     # Solicitar al CRUD que realice la inserción
     DAO.CRUDUsuario.ingresar(usu)
 
@@ -68,10 +62,10 @@ def mostrarTodos():
     print("    MOSTRAR TODOS")
     print("=========================")
     datos = DAO.CRUDUsuario.mostrarTodos()
-    print("ID\tRut\t\tNombre Completo\tEmail\tpassword\t\t\t\testado")
+    print("ID\t\tNombre Completo\tEmail\tpassword\t\t\t\testado")
     for dato in datos:
-        print("{}\t{}\t\t{}\t\t{}\t\t{}\t\t{}".
-              format(dato[0], dato[1], dato[2], dato[3], dato[4],dato[5]))
+        print("{}\t\t{}\t\t{}\t\t{}\t\t{}".
+              format(dato[0], dato[1], dato[2], dato[3], dato[4]))
 
 
 def mostrarUno():
@@ -85,11 +79,10 @@ def mostrarUno():
     print("   DATOS DEL USUARIO")
     print("=========================")
     print("ID                       {}".format(dato[0]))
-    print("Rut                      {}".format(dato[1]))
-    print("Nombre Completo          {}".format(dato[2]))
-    print("Email                    {}".format(dato[3]))
-    print("password                 {}".format(dato[4]))
-    print("estado                   {}".format(dato[5]))
+    print("Nombre Completo          {}".format(dato[1]))
+    print("Email                    {}".format(dato[2]))
+    print("password                 {}".format(dato[3]))
+    print("estado                   {}".format(dato[4]))
 
     input("\nPresione Enter para continuar")
 
@@ -101,10 +94,10 @@ def mostrarParcial():
     print("=========================")
     cant = int(input("Ingrese Cantidad de Datos a Mostrar: "))
     datos = DAO.CRUDUsuario.mostrarParcial(cant)
-    print("ID\tNombre\t\tApellido\tnombreUsuario\trut\t\t\t\trol\t\t\temail\t\t\t\tcontraseña")
+    print("ID\t\tNombre Completo\tEmail\tpassword\t\t\t\testado")
     for dato in datos:
-        print("{}\t{}\t\t{}\t\t{}\t\t{}\t\t\t{}\t\t\t{}\t\t\t{}".
-              format(dato[0], dato[1], dato[2], dato[3], dato[4], dato[5], dato[6], dato[7]))
+        print("{}\t\t{}\t\t{}\t\t{}\t\t{}".
+              format(dato[0], dato[1], dato[2], dato[3], dato[4]))
 
 
 def modificarDatos():
@@ -120,59 +113,25 @@ def modificarDatos():
     print("Id Usuario                   :{}".format(dato[0]))
     listanuevos.append(dato[0])
     # Cambiar Nombre
-    print("Nombre               :{}".format(dato[1]))
+    print("Nombre Completo          :{}".format(dato[1]))
     op = input("Desea Cambiar el Nombre [si-no]:")
     if op.lower() == "si":
         nombreNuevo = input("Ingrese Nombre: ")
         listanuevos.append(nombreNuevo)
     else:
         listanuevos.append(dato[1])
-    # Cambiar Apellido
-    print("Apellido             :{}".format(dato[2]))
-    op = input("Desea Cambiar el Apellido [si-no]:")
-    if op.lower() == "si":
-        apellidoNuevo = input("Ingrese Apellido: ")
-        listanuevos.append(apellidoNuevo)
-    else:
-        listanuevos.append(dato[2])
 
     # Modificar Edad
-    print("Nombre Usuario               :{}".format(dato[3]))
-    op = input("Desea Cambiar el Nombre Usuario [si-no]:")
+    print("Nombre Email               :{}".format(dato[2]))
+    op = input("Desea Cambiar el Email [si-no]:")
     if op.lower() == "si":
-        NombreUsuarionueva = input("Ingrese Nombre Usuario: ")
+        NombreUsuarionueva = input("Ingrese Email: ")
         listanuevos.append(NombreUsuarionueva)
     else:
         listanuevos.append(dato[3])
-    # Modificar Genero
-    print("rut               :{}".format(dato[4]))
-    op = input("Desea Cambiar el rut [si-no]:")
-    if op.lower() == "si":
-        rutNuevo = input("Ingrese rut: ")
-        listanuevos.append(rutNuevo)
-    else:
-        listanuevos.append(dato[4])
-
-    # Modificar CorreoElectronico
-    print("rol               :{}".format(dato[5]))
-    op = input("Desea Cambiar el rol [si-no]:")
-    if op.lower() == "si":
-        rolNuevo = input("Ingrese CorreoElectronico: ")
-        listanuevos.append(rolNuevo)
-    else:
-        listanuevos.append(dato[5])
-
-    # Modificar Telefono
-    print("CorreoElectronico               :{}".format(dato[6]))
-    op = input("Desea Cambiar el Telefono [si-no]:")
-    if op.lower() == "si":
-        emailNuevo = input("Ingrese email: ")
-        listanuevos.append(emailNuevo)
-    else:
-        listanuevos.append(dato[6])
 
         # Modificar contraseña
-    print("contraseña               :{}".format(dato[6]))
+    print("contraseña               :{}".format(dato[3]))
     op = input("Desea Cambiar la contraseña [si-no]:")
     if op.lower() == "si":
         contraseñaNuevo = input("Ingrese contraseña: ")

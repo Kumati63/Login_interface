@@ -16,8 +16,8 @@ def ingresar(usu):
         con = Conexion(host, user, password, db)
         # print("Estado CON:{}".format(con))
         # Se cea la Query ara hacer la inserción de un Usuario
-        sql = "INSERT INTO usuario SET rut = '{}', nombre_completo = '{}', email = '{}', password = '{}', estado = 1".\
-            format(usu.rut, usu.nombre_completo, usu.email, hash_md5(usu.password), usu.estado)
+        sql = "INSERT INTO usuario SET nombre_completo = '{}', email = '{}', password = '{}', estado = 1".\
+            format(usu.nombre_completo, usu.email, hash_md5(usu.password), usu.estado)
         # Ejecutar la Query para hacer la inserción
         con.ejecuta_query(sql)
         # Debemos actualizar
@@ -70,7 +70,7 @@ def mostrarParcial(cant):
 def modificar(usu):
     try:
         con = Conexion(host, user, password, db)
-        sql = "INSERT INTO usuario SET rut = '{}', nombre_completo = '{}', email = '{}', " \
+        sql = "INSERT INTO usuario SET nombre_completo = '{}', email = '{}', " \
             "password = '{}', estado = 1 where id_usuario  = {}". \
             format(usu[1], usu[2], usu[3], usu[4], usu[0])
         con.ejecuta_query(sql)

@@ -4,10 +4,60 @@ from tkinter import messagebox
 from tkinter import Canvas
 from PIL import ImageTk, Image
 import random
+import pymysql
 import os
 from DTO.Varios import hash_md5
 
+
+def menu_usuario():
+    login_window.withdraw()
+
+    Menu_usu = Toplevel()
+    Menu_usu.title("Menu Usuario")
+    Menu_usu.minsize(width=400, height=200)
+    Menu_usu.config(padx=30, pady=30)
+
+    # Botón para abrir ventana ingreso sintomas
+    Button(Menu_usu, text="ingresar sintomas").pack(pady=10)
+
+    # Botón para abrir ventana ingreso virus
+    Button(Menu_usu, text="ingresar virus").pack(pady=10)
+
+    # Botón para abrir ventana ingreso de ADN
+    Button(Menu_usu, text="Ingresar ADN").pack(pady=10)
+
+    # Botón para salir de la ventana secundaria
+    Button(Menu_usu, text="Salir del Usuario").pack(pady=10)
+
 def Login():# Esta función se ejecutará cuando se presione el botón
+
+    def verificar_credenciales():
+        Email_usu = Email_var.get()
+        password_usu = hash_md5(passw_var.get())
+
+        conexion = pymysql.connect(
+            host='localhost',
+            user='root',
+            password='',
+            db='login_interface'
+        )
+        cursor = conexion.cursor()
+
+        cursor.execute("SELECT email, password FROM usuario WHERE email = %s AND password = %s",
+                       (Email_usu, password_usu))
+
+        usuario = cursor.fetchone()
+
+        print("--------------------------------")
+        print(Email_usu)
+        print(password_usu)
+        conexion.close()
+
+        if usuario:
+            messagebox.showinfo("Éxito", "Inicio de sesión exitoso")
+            menu_usuario()
+        else:
+            messagebox.showerror("Error", "Usuario o contraseña incorrectos")
 
     # vamos a ocultar la ventana principal
     root.withdraw()
@@ -53,7 +103,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
             password = hash_md5(passw_var.get())
             print(Email)
             print(password)
-            User_interface()
+            verificar_credenciales()
 
 
 
@@ -147,6 +197,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
 def return_to_main():
     login_window.withdraw()
     root.deiconify() #restaurar la ventana principal
+
 def recuperar_contra():
     root.withdraw()
     ventana = Toplevel(root)
@@ -161,6 +212,8 @@ def recuperar_contra():
         return True
 
     def boton_codigo():
+        reset_code = random.randint(100000, 999999)
+        print(reset_code)
         messagebox.showinfo("Código de Recuperación", "Código enviado con éxito")
 
     # Registra la función de validación
