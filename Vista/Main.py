@@ -199,12 +199,17 @@ def from_signup_to_login():
     ventana_registro.withdraw()
     login_window.deiconify()
 
+def from_recuperarContra_to_main():
+    ventana_contra.withdraw()
+    root.deiconify()
+
 def cambiar_contra():
     root.withdraw()
-    ventana = Toplevel(root)
-    ventana.title("Recuperación de Contraseña")
-    ventana.geometry("650x450")
-    ventana.configure(bg="white")
+    global ventana_contra
+    ventana_contra = Toplevel(root)
+    ventana_contra.title("Recuperación de Contraseña")
+    ventana_contra.geometry("650x450")
+    ventana_contra.configure(bg="white")
 
     def validate_length(new_value):
         max_length = 25
@@ -212,7 +217,7 @@ def cambiar_contra():
             return False
         return True
     # Registra la función de validación
-    validate_cmd = ventana.register(validate_length)
+    validate_cmd = ventana_contra.register(validate_length)
 
     def validar_contraseña():
         password1 = password.get()
@@ -227,9 +232,11 @@ def cambiar_contra():
     def boton_guardar():
         if validar_contraseña():
             # info para almacenar en bd
-            messagebox.showinfo("Creación de Usuario", "Datos almacenados con éxito")
+            messagebox.showinfo("Cambio de contraseña", "Cambio de contraseña realizado con éxito")
+            from_recuperarContra_to_main()
 
-    frame_cabecera = Frame(ventana, bg="white")
+
+    frame_cabecera = Frame(ventana_contra, bg="white")
     frame_cabecera.grid(row=0, column=1, columnspan=1, padx=10, pady=20)
     cabecera = Label(frame_cabecera, text="Recuperacion de contraseña", font=('Poppins', 18, "bold"), bg="white",
                         anchor="center")
@@ -238,7 +245,7 @@ def cambiar_contra():
     """line = Label(ventana, width=30, text="", height=1, bg="#3fb5a3", anchor=NW)
     line.grid(row=1, column=1, columnspan=1, padx=10, pady=5)"""
 
-    frame_contenido = Frame(ventana, bg="white")
+    frame_contenido = Frame(ventana_contra, bg="white")
     frame_contenido.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
 
     # Etiquetas y campos de entrada dentro del frame de contenido
@@ -258,6 +265,7 @@ def cambiar_contra():
 
 
 def recuperar_contra():
+    login_window.withdraw()
     root.withdraw()
     ventana = Toplevel(root)
     ventana.title("Recuperación de Contraseña")
@@ -295,10 +303,10 @@ def recuperar_contra():
     boton1 = Button(frame_contenido, text="Enviar Código", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white", activebackground="#1E78D5", activeforeground="white", command=boton_codigo)
     boton1.grid(row=1, column=1, padx=1, pady=20)
 
-    usuario_label = Label(frame_contenido, text="INGRESAR CÓDIGO", font=('calibre', 11, 'bold'), bg="white")
-    usuario_label.grid(row=2, column=0, padx=30, pady=10, sticky="e")
-    usuario = Entry(frame_contenido, width=25, validate="key", validatecommand=(validate_cmd, '%P'), font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
-    usuario.grid(row=2, column=1, padx=10, pady=10)
+    codigo_label = Label(frame_contenido, text="INGRESAR CÓDIGO", font=('calibre', 11, 'bold'), bg="white")
+    codigo_label.grid(row=2, column=0, padx=30, pady=10, sticky="e")
+    codigo = Entry(frame_contenido, width=25, validate="key", validatecommand=(validate_cmd, '%P'), font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
+    codigo.grid(row=2, column=1, padx=10, pady=10)
 
     boton2 = Button(frame_contenido, text="Verificar Código", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white", activebackground="#1E78D5", activeforeground="white", command = from_signup_to_login)
     boton2.grid(row=3, column=1, padx=1, pady=20)
