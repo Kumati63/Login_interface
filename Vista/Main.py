@@ -183,7 +183,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                     fg="white",
                     activebackground="#1E78D5",
                     activeforeground="white",
-                    command=return_to_main).place(x=35, y=320)
+                    command=return_to_main_from_login).place(x=35, y=320)
 
     help_btn = Button(Frame_down,
                     text=' Help? ',
@@ -195,8 +195,12 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                     activeforeground="white",
                     command=Help_function).place(x=305, y=320)
 
-def return_to_main():
+def return_to_main_from_login():
     login_window.withdraw()
+    root.deiconify() #restaurar la ventana principal
+
+def return_to_main_from_signup():
+    ventana_registro.withdraw()
     root.deiconify() #restaurar la ventana principal
 
 def return_to_login():
@@ -247,7 +251,7 @@ def recuperar_contra():
     usuario = Entry(frame_contenido, width=25, validate="key", validatecommand=(validate_cmd, '%P'), font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
     usuario.grid(row=2, column=1, padx=10, pady=10)
 
-    boton2 = Button(frame_contenido, text="Verificar Código", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white", activebackground="#1E78D5", activeforeground="white")
+    boton2 = Button(frame_contenido, text="Verificar Código", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white", activebackground="#1E78D5", activeforeground="white", command = return_to_main_from_signup)
     boton2.grid(row=3, column=1, padx=1, pady=20)
 def Sign_up():
     root.withdraw()
@@ -345,7 +349,7 @@ def Sign_up():
     boton = Button(frame_botones, text="Guardar", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white",activebackground="#1E78D5", activeforeground="white", command=boton_guardar)
     boton.grid(row=0, column=0, padx=10, pady=20)
 
-    boton2 = Button(frame_botones, text="Cancelar", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white",activebackground="#1E78D5", activeforeground="white",command=return_to_main)
+    boton2 = Button(frame_botones, text="Cancelar", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white",activebackground="#1E78D5", activeforeground="white",command=return_to_main_from_signup)
     boton2.grid(row=0, column=1, padx=10, pady=20)
 def User_interface():
     # vamos a ocultar la ventana principal
