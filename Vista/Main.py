@@ -47,10 +47,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                        (Email_usu, password_usu))
 
         usuario = sql_login.fetchone()
-
-        print("--------------------------------")
-        print(Email_usu)
-        print(password_usu)
+        
         conexion.close()
 
         if usuario:
