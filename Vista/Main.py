@@ -31,6 +31,7 @@ def menu_usuario():
                         command=return_to_main_from_menu_usu).place(x=125, y=90)
 
 global login_window
+global Email_var
 def Login():# Esta función se ejecutará cuando se presione el botón
 
     def verificar_credenciales():
@@ -83,6 +84,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
 
     # declaring string variable
     # for storing name and password
+    global Email_var
     Email_var = StringVar()
     passw_var = StringVar()
     def Help_function():
@@ -104,7 +106,62 @@ def Login():# Esta función se ejecutará cuando se presione el botón
             verificar_credenciales()
 
     def Forgot_password():
-        recuperar_contra()
+            login_window.withdraw()
+            ventana = Toplevel(root)
+            ventana.title("Recuperación de Contraseña")
+            ventana.geometry("650x450")
+            ventana.configure(bg="white")
+
+            def validate_length(new_value):
+                max_length = 25
+                if len(new_value) > max_length:
+                    return False
+                return True
+
+            def generar_codigo_aleatorio(longitud):
+                caracteres = string.ascii_letters + string.digits
+                return ''.join(random.choice(caracteres) for _ in range(longitud))
+
+            def boton_codigo():
+                codigo_aleatorio = generar_codigo_aleatorio(6)
+                print(codigo_aleatorio)
+                messagebox.showinfo("Código de Recuperación",
+                                    "Código de Recuperación enviado\ntiene 5 minutos para la recuperación")
+
+            # Registra la función de validación
+            validate_cmd = ventana.register(validate_length)
+
+            frame_cabecera = Frame(ventana, bg="white")
+            frame_cabecera.grid(row=0, column=1, columnspan=1, padx=10, pady=20)
+            cabecera = Label(frame_cabecera, text="Recuperación de Contraseña", font=('Poppins', 18, "bold"),
+                             bg="white", anchor="center")
+            cabecera.pack()
+
+            frame_contenido = Frame(ventana, bg="white")
+            frame_contenido.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+
+            # Etiquetas y campos de entrada dentro del frame de contenido
+            correo_label = Label(frame_contenido, text="CORREO", font=('calibre', 11, 'bold'), bg="white")
+            correo_label.grid(row=0, column=0, padx=30, pady=10, sticky="e")
+            correo = Entry(frame_contenido, width=25, validate="key", validatecommand=(validate_cmd, '%P'),
+                           font=('calibre', 17, 'normal'), bg="white", borderwidth=2, state="normal")
+            correo.grid(row=0, column=1, padx=10, pady=10)
+            correo.insert(0, Email_var.get())  # Insert the value of Email_var into the Entry field
+            correo.config(state="disabled")
+
+            boton1 = Button(frame_contenido, text="Enviar Código", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5",
+                            fg="white", activebackground="#1E78D5", activeforeground="white", command=boton_codigo)
+            boton1.grid(row=1, column=1, padx=1, pady=20)
+
+            codigo_label = Label(frame_contenido, text="INGRESAR CÓDIGO", font=('calibre', 11, 'bold'), bg="white")
+            codigo_label.grid(row=2, column=0, padx=30, pady=10, sticky="e")
+            codigo = Entry(frame_contenido, width=25, validate="key", validatecommand=(validate_cmd, '%P'),
+                           font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
+            codigo.grid(row=2, column=1, padx=10, pady=10)
+
+            boton2 = Button(frame_contenido, text="Verificar Código", font=('calibre', 10, 'bold'), width=15,
+                            bg="#1E78D5", fg="white", activebackground="#1E78D5", activeforeground="white")
+            boton2.grid(row=3, column=1, padx=1, pady=20)
 
     # Step 3: Load the image using PIL
     image_path = image_path = os.path.join(os.path.dirname(__file__), '..', 'img', 'newimage.png')  # Replace with your image path
@@ -265,56 +322,7 @@ def cambiar_contra():
     boton.grid(row=2, column=1, padx=1, pady=20)
 
 
-def recuperar_contra():
-    login_window.withdraw()
-    root.withdraw()
-    ventana = Toplevel(root)
-    ventana.title("Recuperación de Contraseña")
-    ventana.geometry("650x450")
-    ventana.configure(bg="white")
 
-    def validate_length(new_value):
-        max_length = 25
-        if len(new_value) > max_length:
-            return False
-        return True
-
-    def generar_codigo_aleatorio(longitud):
-        caracteres = string.ascii_letters + string.digits
-        return ''.join(random.choice(caracteres) for _ in range(longitud))
-
-    def boton_codigo():
-        codigo_aleatorio = generar_codigo_aleatorio(6)
-        print(codigo_aleatorio)
-        messagebox.showinfo("Código de Recuperación", "Código de Recuperación enviado\ntiene 5 minutos para la recuperación")
-
-    # Registra la función de validación
-    validate_cmd = ventana.register(validate_length)
-
-    frame_cabecera = Frame(ventana, bg="white")
-    frame_cabecera.grid(row=0, column=1, columnspan=1, padx=10, pady=20)
-    cabecera = Label(frame_cabecera, text="Recuperación de Contraseña", font=('Poppins', 18, "bold"), bg="white", anchor="center")
-    cabecera.pack()
-
-    frame_contenido = Frame(ventana, bg="white")
-    frame_contenido.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
-
-    # Etiquetas y campos de entrada dentro del frame de contenido
-    correo_label = Label(frame_contenido, text="CORREO", font=('calibre', 11, 'bold'), bg="white")
-    correo_label.grid(row=0, column=0, padx=30, pady=10, sticky="e")
-    correo = Entry(frame_contenido, width=25, validate="key", validatecommand=(validate_cmd, '%P'), font=('calibre', 17, 'normal'), bg="white", borderwidth=2, state="disabled")
-    correo.grid(row=0, column=1, padx=10, pady=10)
-
-    boton1 = Button(frame_contenido, text="Enviar Código", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white", activebackground="#1E78D5", activeforeground="white", command=boton_codigo)
-    boton1.grid(row=1, column=1, padx=1, pady=20)
-
-    codigo_label = Label(frame_contenido, text="INGRESAR CÓDIGO", font=('calibre', 11, 'bold'), bg="white")
-    codigo_label.grid(row=2, column=0, padx=30, pady=10, sticky="e")
-    codigo = Entry(frame_contenido, width=25, validate="key", validatecommand=(validate_cmd, '%P'), font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
-    codigo.grid(row=2, column=1, padx=10, pady=10)
-
-    boton2 = Button(frame_contenido, text="Verificar Código", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5", fg="white", activebackground="#1E78D5", activeforeground="white")
-    boton2.grid(row=3, column=1, padx=1, pady=20)
 
 
 
