@@ -5,6 +5,7 @@ from tkinter import Canvas
 from PIL import ImageTk, Image
 import random
 import string
+import time
 import pymysql
 import os
 from DTO.Varios import hash_md5
@@ -285,7 +286,7 @@ def recuperar_contra():
     def boton_codigo():
         codigo_aleatorio = generar_codigo_aleatorio(6)
         print(codigo_aleatorio)
-        messagebox.showinfo("Código de Recuperación", "Código enviado con éxito")
+        messagebox.showinfo("Código de Recuperación", "Código de Recuperación enviado\ntiene 5 minutos para la recuperación")
 
     # Registra la función de validación
     validate_cmd = ventana.register(validate_length)
