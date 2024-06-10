@@ -12,24 +12,24 @@ from DTO.Varios import hash_md5
 
 def menu_usuario():
     login_window.withdraw()
-
+    global Menu_usu
     Menu_usu = Toplevel()
     Menu_usu.title("Menu Usuario")
     Menu_usu.minsize(width=400, height=200)
-    Menu_usu.config(padx=30, pady=30)
+    Menu_usu.config(bg="white" ,padx=30, pady=30)
 
-    # Botón para abrir ventana ingreso sintomas
-    Button(Menu_usu, text="ingresar sintomas").pack(pady=10)
+    Header = Label(Menu_usu, text="Sesion Ingresada", font=('Poppins', 23, "bold"), bg="white").place(x=40, y=20)
+    return_btn = Button(Menu_usu,
+                        text='Cerrar sesion',
+                        font=('calibre', 10, 'bold'),
+                        width=10,
+                        bg="#007dfe",
+                        fg="white",
+                        activebackground="#1E78D5",
+                        activeforeground="white",
+                        command=return_to_main_from_menu_usu).place(x=125, y=90)
 
-    # Botón para abrir ventana ingreso virus
-    Button(Menu_usu, text="ingresar virus").pack(pady=10)
-
-    # Botón para abrir ventana ingreso de ADN
-    Button(Menu_usu, text="Ingresar ADN").pack(pady=10)
-
-    # Botón para salir de la ventana secundaria
-    Button(Menu_usu, text="Salir del Usuario").pack(pady=10)
-
+global login_window
 def Login():# Esta función se ejecutará cuando se presione el botón
 
     def verificar_credenciales():
@@ -60,8 +60,9 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     # vamos a ocultar la ventana principal
     root.withdraw()
 
-    # crear nueva ventana para el Login
+
     global login_window
+    # crear nueva ventana para el Login
     login_window = Toplevel(root)
     login_window.title("Log In")
     login_window.geometry("800x450")
@@ -193,13 +194,13 @@ def return_to_main_from_login():
     login_window.withdraw()
     root.deiconify() #restaurar la ventana principal
 
+def return_to_main_from_menu_usu():
+    Menu_usu.withdraw()
+    root.deiconify() #restaurar la ventana principal
+
 def return_to_main_from_signup():
     ventana_registro.withdraw()
     root.deiconify() #restaurar la ventana principal
-
-def from_signup_to_login():
-    ventana_registro.withdraw()
-    root.deiconify()
 
 def from_recuperarContra_to_main():
     ventana_contra.withdraw()
@@ -383,7 +384,8 @@ def Sign_up():
                 conexion.close()
 
                 messagebox.showinfo("Éxito", "Datos de usuario ingresados correctamente")
-                from_signup_to_login()
+                Login()
+                ventana_registro.withdraw()
 
 
     # Registra la función de validación
