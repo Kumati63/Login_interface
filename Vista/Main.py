@@ -221,6 +221,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                                   (Email_usu))
 
                 conexion.close()
+                cambiar_contra()
 
 
         # Registra la función de validación
@@ -261,6 +262,73 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         # Message label to display the code
         message_label = Label(frame_contenido, text="", font=('calibre', 12), bg="white")
         message_label.grid(row=4, column=1, padx=10, pady=10)
+
+    def cambiar_contra():
+        global ventana
+        ventana.withdraw()
+        global ventana_contra
+        ventana_contra = Toplevel(root)
+        ventana_contra.title("Recuperación de Contraseña")
+        ventana_contra.geometry("650x450")
+        ventana_contra.configure(bg="white")
+
+        def validate_password(password):
+            if len(password) < 8 or len(password) > 24:
+                return False
+            if not re.search(r'[A-Z]', password):
+                return False
+            if not re.search(r'[0-9]', password):
+                return False
+            if not re.search(r'[\W_]', password):  # \W busca cualquier carácter no alfanumérico
+                return False
+            return True
+
+        # Registra la función de validación
+        validate_cmd = ventana_contra.register(validate_password())
+
+        def validar_contraseña():
+            password1 = password.get()
+            password2 = password2_pass.get()
+
+            if password1 != password2:
+                messagebox.showwarning("Advertencia", "Las contraseñas no coinciden")
+                return False
+            else:
+                return True
+
+        def boton_guardar2():
+            if validar_contraseña():
+                # info para almacenar en bd
+                messagebox.showinfo("Cambio de contraseña", "Cambio de contraseña realizado con éxito")
+                from_recuperarContra_to_main()
+
+        frame_cabecera = Frame(ventana_contra, bg="white")
+        frame_cabecera.grid(row=0, column=1, columnspan=1, padx=10, pady=20)
+        cabecera = Label(frame_cabecera, text="Recuperacion de contraseña", font=('Poppins', 18, "bold"), bg="white",
+                         anchor="center")
+        cabecera.pack()
+
+        frame_contenido = Frame(ventana_contra, bg="white")
+        frame_contenido.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+
+        # Etiquetas y campos de entrada dentro del frame de contenido
+
+        password_label = Label(frame_contenido, text="CONTRASEÑA", font=('calibre', 11, 'bold'), bg="white")
+        password_label.grid(row=0, column=0, padx=30, pady=10, sticky="e")
+        password = Entry(frame_contenido, width=25, show="*", validate="key", validatecommand=(validate_cmd, '%P'),
+                         font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
+        password.grid(row=0, column=1, padx=10, pady=10)
+
+        password2_label = Label(frame_contenido, text="REPETIR CONTRASEÑA", font=('calibre', 11, 'bold'), bg="white")
+        password2_label.grid(row=1, column=0, padx=30, pady=10, sticky="e")
+        password2_pass = Entry(frame_contenido, width=25, show="*", validate="key",
+                               validatecommand=(validate_cmd, '%P'), font=('calibre', 17, 'normal'), bg="white",
+                               borderwidth=2)
+        password2_pass.grid(row=1, column=1, padx=10, pady=10)
+
+        boton = Button(frame_contenido, text="verificar", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5",
+                       fg="white", activebackground="#1E78D5", activeforeground="white", command=boton_guardar2)
+        boton.grid(row=2, column=1, padx=1, pady=20)
 
     def disable_email():
         Email_usu = Email_var.get()
@@ -399,67 +467,8 @@ def from_recuperarContra_to_main():
     ventana_contra.withdraw()
     root.deiconify()
 
-def cambiar_contra():
-    root.withdraw()
-    global ventana_contra
-    ventana_contra = Toplevel(root)
-    ventana_contra.title("Recuperación de Contraseña")
-    ventana_contra.geometry("650x450")
-    ventana_contra.configure(bg="white")
-
-    def validate_password(password):
-        if len(password) < 8 or len(password) > 24:
-            return False
-        if not re.search(r'[A-Z]', password):
-            return False
-        if not re.search(r'[0-9]', password):
-            return False
-        if not re.search(r'[\W_]', password):  # \W busca cualquier carácter no alfanumérico
-            return False
-        return True
-    # Registra la función de validación
-    validate_cmd = ventana_contra.register(validate_password())
-
-    def validar_contraseña():
-        password1 = password.get()
-        password2 = password2_pass.get()
-
-        if password1 != password2:
-            messagebox.showwarning("Advertencia", "Las contraseñas no coinciden")
-            return False
-        else:
-            return True
-
-    def boton_guardar2():
-        if validar_contraseña():
-            # info para almacenar en bd
-            messagebox.showinfo("Cambio de contraseña", "Cambio de contraseña realizado con éxito")
-            from_recuperarContra_to_main()
 
 
-    frame_cabecera = Frame(ventana_contra, bg="white")
-    frame_cabecera.grid(row=0, column=1, columnspan=1, padx=10, pady=20)
-    cabecera = Label(frame_cabecera, text="Recuperacion de contraseña", font=('Poppins', 18, "bold"), bg="white",
-                        anchor="center")
-    cabecera.pack()
-
-    frame_contenido = Frame(ventana_contra, bg="white")
-    frame_contenido.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
-
-    # Etiquetas y campos de entrada dentro del frame de contenido
-
-    password_label = Label(frame_contenido, text="CONTRASEÑA", font=('calibre', 11, 'bold'), bg="white")
-    password_label.grid(row=0, column=0, padx=30, pady=10, sticky="e")
-    password = Entry(frame_contenido, width=25, show="*", validate="key", validatecommand=(validate_cmd, '%P'),font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
-    password.grid(row=0, column=1, padx=10, pady=10)
-
-    password2_label = Label(frame_contenido, text="REPETIR CONTRASEÑA", font=('calibre', 11, 'bold'), bg="white")
-    password2_label.grid(row=1, column=0, padx=30, pady=10, sticky="e")
-    password2_pass = Entry(frame_contenido, width=25, show="*", validate="key", validatecommand=(validate_cmd, '%P'),font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
-    password2_pass.grid(row=1, column=1, padx=10, pady=10)
-
-    boton = Button(frame_contenido, text="verificar", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5",fg="white", activebackground="#1E78D5", activeforeground="white", command=boton_guardar2)
-    boton.grid(row=2, column=1, padx=1, pady=20)
 
 
 
