@@ -42,7 +42,7 @@ global Email_var
 def Login():# Esta función se ejecutará cuando se presione el botón
     def cambiar_contra():
 
-        #ventana_forgot.withdraw()
+        ventana_forgot.withdraw()
         global ventana_contra
         ventana_contra = Toplevel(root)
         ventana_contra.title("Recuperación de Contraseña")
@@ -50,8 +50,9 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         ventana_contra.configure(bg="white")
 
         def change_password():
-            password = passw_var.get()
-            re_password = re_passw_var.get()
+            Email = Email_var.get()
+            password = hash_md5(passw_var.get())
+            re_password = hash_md5(re_passw_var.get())
 
             if password == re_password:
                 conexion = pymysql.connect(
@@ -62,19 +63,13 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                 )
                 sql_login = conexion.cursor()
 
-                sql_login.execute(
-                    "SELECT email, password FROM usuario WHERE email = %s AND password = %s AND estado = 1",
-                    (password, re_password))
-
-                usuario = sql_login.fetchone()
+                sql_login.execute("UPDATE `usuario` SET `password` = %s WHERE `usuario`.`email` = %s;",
+                                  (password, Email))
 
                 conexion.close()
+                messagebox.showerror("YAY!", "contraseña Cambiada correctamente")
+                from_recuperarContra_to_login()
 
-                if usuario:
-                    messagebox.showinfo("Éxito", "Inicio de sesión exitoso")
-                    menu_usuario()
-                else:
-                    messagebox.showerror("Error", "Usuario o contraseña incorrectos\nó usuario desactivado")
             else:
                 messagebox.showerror("Error", "contraseñas no son iguales")
 
@@ -83,7 +78,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         passw_var = StringVar()
         re_passw_var = StringVar()
         def submit_password():
-
+            Email = Email_var.get()
             password = passw_var.get()
             re_password = re_passw_var.get()
             if len(password) == 0:
@@ -92,9 +87,11 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                 messagebox.showinfo("Warning", "Please fill the password field")
             else:
                 Email = Email_var.get()
-                password = hash_md5(passw_var.get())
+                password = passw_var.get()
+                re_password = re_passw_var.get()
                 print(Email)
                 print(password)
+                print(re_password)
                 change_password()
 
         Frame_up = Frame(ventana_contra, width=400, height=70, bg="white")
@@ -503,6 +500,10 @@ def return_to_main_from_signup():
 def from_recuperarContra_to_main():
     ventana_contra.withdraw()
     root.deiconify()
+
+def from_recuperarContra_to_login():
+    ventana_contra.withdraw()
+    login_window.deiconify()
 
 
 def Sign_up():
