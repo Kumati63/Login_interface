@@ -10,6 +10,12 @@ import time
 import pymysql
 import os
 from DTO.Varios import hash_md5
+from dotenv import load_dotenv
+from email.message import EmailMessage
+import smtplib
+import ssl
+
+load_dotenv()
 
 
 def menu_usuario():
@@ -149,7 +155,24 @@ def Login():# Esta función se ejecutará cuando se presione el botón
             save_code_to_database(codigo_aleatorio)
             display_message("Código de Recuperación Enviado\ntiene 5 minutos antes de que el codigo cambie")
             # Change the code every 5 minutes
-            ventana.after(10000, boton_codigo)
+            ventana.after(300000, boton_codigo)
+            email_sender = "correodepruebas716@gmail.com"
+            email_receiver = correo.get()  # Assuming 'correo' is the Entry field for the email address
+            subject = "Código de Recuperación"
+            body = f"Su código de recuperación es: {codigo_aleatorio}"
+
+            em = EmailMessage()
+            em["From"] = email_sender
+            em["To"] = email_receiver
+            em["Subject"] = subject
+            em.set_content(body)
+
+            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+                smtp.login(email_sender, "v a h b i o b v i z k n y l o g")  # Replace with your email password
+                smtp.send_message(em)
+
+            # Show a messagebox informing the user
+            messagebox.showinfo("Código de Recuperación","Código de Recuperación enviado. Verifique su correo electrónico.")
 
         global codigo_aleatorio
         def verify_same_code():
