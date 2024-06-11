@@ -206,7 +206,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                 messagebox.showinfo("Too bad", "Verification code does not match.")
             else:
                 ventana.after_cancel(boton_codigo)
-                messagebox.showinfo("Too bad", "Verification code does not match.")
+                messagebox.showinfo("Good Job", "Codigo verificador coincide.")
                 Email_usu = Email_var.get()
 
                 conexion = pymysql.connect(
@@ -263,7 +263,6 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         message_label.grid(row=4, column=1, padx=10, pady=10)
 
     def disable_email():
-        
         Email_usu = Email_var.get()
 
         conexion = pymysql.connect(
@@ -274,11 +273,29 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         )
         sql_login = conexion.cursor()
 
-        sql_login.execute("UPDATE `usuario` SET `estado` = 0 WHERE `usuario`.`email` = %s;",
+        sql_login.execute("SELECT email FROM usuario WHERE email = %s",
                           (Email_usu))
 
+        usuario = sql_login.fetchone()
+
         conexion.close()
-        Forgot_password()
+
+        if usuario:
+            conexion = pymysql.connect(
+                host='localhost',
+                user='root',
+                password='',
+                db='login_interface'
+            )
+            sql_login = conexion.cursor()
+
+            sql_login.execute("UPDATE `usuario` SET `estado` = 0 WHERE `usuario`.`email` = %s;",
+                              (Email_usu))
+
+            conexion.close()
+            Forgot_password()
+        else:
+            messagebox.showerror("Error", "Usuario no encontrado")
 
 
     # Step 3: Load the image using PIL
