@@ -46,7 +46,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         )
         sql_login = conexion.cursor()
 
-        sql_login.execute("SELECT email, password FROM usuario WHERE email = %s AND password = %s",
+        sql_login.execute("SELECT email, password FROM usuario WHERE email = %s AND password = %s AND estado = 1",
                        (Email_usu, password_usu))
 
         usuario = sql_login.fetchone()
@@ -57,7 +57,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
             messagebox.showinfo("Éxito", "Inicio de sesión exitoso")
             menu_usuario()
         else:
-            messagebox.showerror("Error", "Usuario o contraseña incorrectos")
+            messagebox.showerror("Error", "Usuario o contraseña incorrectos\nó usuario desactivado")
 
     # vamos a ocultar la ventana principal
     root.withdraw()
@@ -106,62 +106,156 @@ def Login():# Esta función se ejecutará cuando se presione el botón
             verificar_credenciales()
 
     def Forgot_password():
-            login_window.withdraw()
-            ventana = Toplevel(root)
-            ventana.title("Recuperación de Contraseña")
-            ventana.geometry("650x450")
-            ventana.configure(bg="white")
+        login_window.withdraw()
+        ventana = Toplevel(root)
+        ventana.title("Recuperación de Contraseña")
+        ventana.geometry("650x450")
+        ventana.configure(bg="white")
 
-            def validate_length(new_value):
-                max_length = 25
-                if len(new_value) > max_length:
-                    return False
-                return True
+        def validate_length(new_value):
+            max_length = 25
+            if len(new_value) > max_length:
+                return False
+            return True
 
-            def generar_codigo_aleatorio(longitud):
-                caracteres = string.ascii_letters + string.digits
-                return ''.join(random.choice(caracteres) for _ in range(longitud))
+        def generar_codigo_aleatorio(longitud):
+            caracteres = string.ascii_letters + string.digits
+            return ''.join(random.choice(caracteres) for _ in range(longitud))
 
-            def boton_codigo():
-                codigo_aleatorio = generar_codigo_aleatorio(6)
-                print(codigo_aleatorio)
-                messagebox.showinfo("Código de Recuperación",
-                                    "Código de Recuperación enviado\ntiene 5 minutos para la recuperación")
+        def display_message(message):
+            message_label.config(text=message)
 
-            # Registra la función de validación
-            validate_cmd = ventana.register(validate_length)
+        def save_code_to_database(codigo_aleatorio):
+            Email_usu = Email_var.get()
 
-            frame_cabecera = Frame(ventana, bg="white")
-            frame_cabecera.grid(row=0, column=1, columnspan=1, padx=10, pady=20)
-            cabecera = Label(frame_cabecera, text="Recuperación de Contraseña", font=('Poppins', 18, "bold"),
-                             bg="white", anchor="center")
-            cabecera.pack()
+            conexion = pymysql.connect(
+                host='localhost',
+                user='root',
+                password='',
+                db='login_interface'
+            )
+            sql_login = conexion.cursor()
 
-            frame_contenido = Frame(ventana, bg="white")
-            frame_contenido.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+            sql_login.execute("UPDATE `usuario` SET `codigo_temporal` = %s WHERE `usuario`.`email` = %s;",
+                              (codigo_aleatorio, Email_usu))
 
-            # Etiquetas y campos de entrada dentro del frame de contenido
-            correo_label = Label(frame_contenido, text="CORREO", font=('calibre', 11, 'bold'), bg="white")
-            correo_label.grid(row=0, column=0, padx=30, pady=10, sticky="e")
-            correo = Entry(frame_contenido, width=25, validate="key", validatecommand=(validate_cmd, '%P'),
-                           font=('calibre', 17, 'normal'), bg="white", borderwidth=2, state="normal")
-            correo.grid(row=0, column=1, padx=10, pady=10)
-            correo.insert(0, Email_var.get())  # Insert the value of Email_var into the Entry field
-            correo.config(state="disabled")
+            conexion.close()
 
-            boton1 = Button(frame_contenido, text="Enviar Código", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5",
-                            fg="white", activebackground="#1E78D5", activeforeground="white", command=boton_codigo)
-            boton1.grid(row=1, column=1, padx=1, pady=20)
+        def boton_codigo():
+            global codigo_aleatorio
+            codigo_aleatorio = generar_codigo_aleatorio(6)
+            print(codigo_aleatorio)
+            save_code_to_database(codigo_aleatorio)
+            display_message("Código de Recuperación Enviado\ntiene 5 minutos antes de que el codigo cambie")
+            # Change the code every 5 minutes
+            ventana.after(10000, boton_codigo)
 
-            codigo_label = Label(frame_contenido, text="INGRESAR CÓDIGO", font=('calibre', 11, 'bold'), bg="white")
-            codigo_label.grid(row=2, column=0, padx=30, pady=10, sticky="e")
-            codigo = Entry(frame_contenido, width=25, validate="key", validatecommand=(validate_cmd, '%P'),
-                           font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
-            codigo.grid(row=2, column=1, padx=10, pady=10)
+        global codigo_aleatorio
+        def verify_same_code():
+            codigo_verificador = codigo.get()
+            Email_usu = Email_var.get()
 
-            boton2 = Button(frame_contenido, text="Verificar Código", font=('calibre', 10, 'bold'), width=15,
-                            bg="#1E78D5", fg="white", activebackground="#1E78D5", activeforeground="white")
-            boton2.grid(row=3, column=1, padx=1, pady=20)
+            conexion = pymysql.connect(
+                host='localhost',
+                user='root',
+                password='',
+                db='login_interface'
+            )
+            sql_login = conexion.cursor()
+
+            sql_login.execute("SELECT codigo_temporal FROM usuario WHERE email = %s ",
+                              (Email_usu))
+            codigo_temp = sql_login.fetchone()
+            conexion.close()
+            if codigo_temp:
+                codigo_temp = codigo_temp[0]
+                # Removing unwanted characters from codigo_temp
+                code_without_parentheses = codigo_temp.replace("(", "").replace(")", "").replace(",", "").replace("'", "")
+                print("-----------------------------")
+                print(Email_usu)
+                print(code_without_parentheses)
+                print(codigo_verificador)
+            else:
+                print("No codigo_temp fetched for the email:", Email_usu)
+
+            if codigo_verificador != code_without_parentheses:
+                messagebox.showinfo("Too bad", "Verification code does not match.")
+            else:
+                ventana.after_cancel(boton_codigo)
+                messagebox.showinfo("Too bad", "Verification code does not match.")
+                Email_usu = Email_var.get()
+
+                conexion = pymysql.connect(
+                    host='localhost',
+                    user='root',
+                    password='',
+                    db='login_interface'
+                )
+                sql_login = conexion.cursor()
+
+                sql_login.execute("UPDATE `usuario` SET `estado` = 1 WHERE `usuario`.`email` = %s;",
+                                  (Email_usu))
+
+                conexion.close()
+
+
+        # Registra la función de validación
+        validate_cmd = ventana.register(validate_length)
+
+        frame_cabecera = Frame(ventana, bg="white")
+        frame_cabecera.grid(row=0, column=1, columnspan=1, padx=10, pady=20)
+        cabecera = Label(frame_cabecera, text="Recuperación de Contraseña", font=('Poppins', 18, "bold"),
+                         bg="white", anchor="center")
+        cabecera.pack()
+
+        frame_contenido = Frame(ventana, bg="white")
+        frame_contenido.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
+
+        # Etiquetas y campos de entrada dentro del frame de contenido
+        correo_label = Label(frame_contenido, text="CORREO", font=('calibre', 11, 'bold'), bg="white")
+        correo_label.grid(row=0, column=0, padx=30, pady=10, sticky="e")
+        correo = Entry(frame_contenido, width=25, validate="key", validatecommand=(validate_cmd, '%P'),
+                       font=('calibre', 17, 'normal'), bg="white", borderwidth=2, state="normal")
+        correo.grid(row=0, column=1, padx=10, pady=10)
+        correo.insert(0, Email_var.get())  # Insert the value of Email_var into the Entry field
+        correo.config(state="disabled")
+
+        boton1 = Button(frame_contenido, text="Enviar Código", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5",
+                        fg="white", activebackground="#1E78D5", activeforeground="white", command=boton_codigo)
+        boton1.grid(row=1, column=1, padx=1, pady=20)
+
+        codigo_label = Label(frame_contenido, text="INGRESAR CÓDIGO", font=('calibre', 11, 'bold'), bg="white")
+        codigo_label.grid(row=2, column=0, padx=30, pady=10, sticky="e")
+        codigo = Entry(frame_contenido, width=25, validate="key", validatecommand=(validate_cmd, '%P'),
+                       font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
+        codigo.grid(row=2, column=1, padx=10, pady=10)
+
+        boton2 = Button(frame_contenido, text="Verificar Código", font=('calibre', 10, 'bold'), width=15,
+                        bg="#1E78D5", fg="white", activebackground="#1E78D5", activeforeground="white", command=verify_same_code)
+        boton2.grid(row=3, column=1, padx=1, pady=20)
+
+        # Message label to display the code
+        message_label = Label(frame_contenido, text="", font=('calibre', 12), bg="white")
+        message_label.grid(row=4, column=1, padx=10, pady=10)
+
+    def disable_email():
+        
+        Email_usu = Email_var.get()
+
+        conexion = pymysql.connect(
+            host='localhost',
+            user='root',
+            password='',
+            db='login_interface'
+        )
+        sql_login = conexion.cursor()
+
+        sql_login.execute("UPDATE `usuario` SET `estado` = 0 WHERE `usuario`.`email` = %s;",
+                          (Email_usu))
+
+        conexion.close()
+        Forgot_password()
+
 
     # Step 3: Load the image using PIL
     image_path = image_path = os.path.join(os.path.dirname(__file__), '..', 'img', 'newimage.png')  # Replace with your image path
@@ -197,7 +291,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     passw_label = Label(Frame_down, text='Password', font=('calibre', 11, 'bold'), bg="white").place(x=65, y=118)
     pass_F = Button(Frame_down,
                     text='Forgot Password',
-                    command=Forgot_password,
+                    command=disable_email,
                     font=('calibre', 9, 'bold'),
                     activebackground="White",
                     activeforeground="#4641FF",
