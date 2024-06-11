@@ -22,7 +22,7 @@ def menu_usuario():
     login_window.withdraw()
     global Menu_usu
     Menu_usu = Toplevel()
-    Menu_usu.title("Menu Usuario")
+    Menu_usu.title("MENU DE USUARIO")
     Menu_usu.minsize(width=400, height=200)
     Menu_usu.config(bg="white" ,padx=30, pady=30)
 
@@ -45,7 +45,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         ventana_forgot.withdraw()
         global ventana_contra
         ventana_contra = Toplevel(root)
-        ventana_contra.title("Recuperación de Contraseña")
+        ventana_contra.title("RECUPERACION DE CONTRASEÑA")
         ventana_contra.geometry("370x350")
         ventana_contra.configure(bg="white")
 
@@ -70,8 +70,16 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                 messagebox.showerror("YAY!", "contraseña Cambiada correctamente")
                 from_recuperarContra_to_login()
 
+<<<<<<< Updated upstream
+=======
+                if usuario:
+                    messagebox.showinfo("ÉXITO", "Inicio de sesión exitoso")
+                    menu_usuario()
+                else:
+                    messagebox.showerror("ERROR", "Usuario o contraseña incorrectos\nó usuario desactivado")
+>>>>>>> Stashed changes
             else:
-                messagebox.showerror("Error", "contraseñas no son iguales")
+                messagebox.showerror("ERROR", "Las contraseñas no coinciden")
 
 
 
@@ -160,10 +168,10 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         conexion.close()
 
         if usuario:
-            messagebox.showinfo("Éxito", "Inicio de sesión exitoso")
+            messagebox.showinfo("ÉXITO", "Inicio de sesión exitoso")
             menu_usuario()
         else:
-            messagebox.showerror("Error", "Usuario o contraseña incorrectos\nó usuario desactivado")
+            messagebox.showerror("ERROR", "Usuario o contraseña incorrectos\nó usuario desactivado")
 
     # vamos a ocultar la ventana principal
     root.withdraw()
@@ -172,7 +180,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     global login_window
     # crear nueva ventana para el Login
     login_window = Toplevel(root)
-    login_window.title("Log In")
+    login_window.title("INICIO DE SESIÓN")
     login_window.geometry("800x450")
     login_window.config(bg="white")
 
@@ -200,9 +208,9 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         Email = Email_var.get()
         password = passw_var.get()
         if len(Email) == 0:
-            messagebox.showinfo("Warning", "Please fill the email field")
+            messagebox.showinfo("ADVERTENCIA", "llenar el campo: correo")
         elif len(password) == 0:
-            messagebox.showinfo("Warning", "Please fill the password field")
+            messagebox.showinfo("ADVERTENCIA", "llenar el campo: contraseña")
         else:
             Email = Email_var.get()
             password = hash_md5(passw_var.get())
@@ -214,7 +222,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         login_window.withdraw()
         global ventana_forgot
         ventana_forgot = Toplevel(root)
-        ventana_forgot.title("Recuperación de Contraseña")
+        ventana_forgot.title("RECUPERACION DE CONTRASEÑA")
         ventana_forgot.geometry("650x450")
         ventana_forgot.configure(bg="white")
 
@@ -252,12 +260,12 @@ def Login():# Esta función se ejecutará cuando se presione el botón
             codigo_aleatorio = generar_codigo_aleatorio(6)
             print(codigo_aleatorio)
             save_code_to_database(codigo_aleatorio)
-            display_message("Código de Recuperación Enviado\ntiene 5 minutos antes de que el codigo cambie")
+            display_message("Código de Recuperación Enviado\nse actualizará en cinco minutos")
             # Change the code every 5 minutes
             ventana_forgot.after(300000, boton_codigo)
             email_sender = "correodepruebas716@gmail.com"
             email_receiver = correo.get()  # Assuming 'correo' is the Entry field for the email address
-            subject = "Código de Recuperación"
+            subject = "CÓDIGO DE RECUPERACIÓN"
             body = f"Su código de recuperación es: {codigo_aleatorio}"
 
             em = EmailMessage()
@@ -271,7 +279,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                 smtp.send_message(em)
 
             # Show a messagebox informing the user
-            messagebox.showinfo("Código de Recuperación","Código de Recuperación enviado. Verifique su correo electrónico.")
+            messagebox.showinfo("CÓDIGO DE RECUPERACIÓN","Código de Recuperación enviado. Verifique su correo electrónico.")
 
         global codigo_aleatorio
         def verify_same_code():
@@ -299,13 +307,13 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                 print(code_without_parentheses)
                 print(codigo_verificador)
             else:
-                print("No codigo_temp fetched for the email:", Email_usu)
+                print("error al enviar el codigo temporal a:", Email_usu)
 
             if codigo_verificador != code_without_parentheses:
-                messagebox.showinfo("Too bad", "Verification code does not match.")
+                messagebox.showinfo("ERROR", "Codigo verificador no coincide.")
             else:
                 ventana_forgot.after_cancel(boton_codigo)
-                messagebox.showinfo("Good Job", "Codigo verificador coincide.")
+                messagebox.showinfo("EXITO", "Codigo verificador coincide.")
                 Email_usu = Email_var.get()
 
                 conexion = pymysql.connect(
@@ -328,7 +336,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
 
         frame_cabecera = Frame(ventana_forgot, bg="white")
         frame_cabecera.grid(row=0, column=1, columnspan=1, padx=10, pady=20)
-        cabecera = Label(frame_cabecera, text="Recuperación de Contraseña", font=('Poppins', 18, "bold"),
+        cabecera = Label(frame_cabecera, text="RECUPERACION DE CONTRASEÑA", font=('Poppins', 18, "bold"),
                          bg="white", anchor="center")
         cabecera.pack()
 
@@ -397,7 +405,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
             conexion.close()
             Forgot_password()
         else:
-            messagebox.showerror("Error", "Usuario no encontrado")
+            messagebox.showerror("ERROR", "Ingrese un usuario")
 
 
     # Step 3: Load the image using PIL
@@ -415,7 +423,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     # Keep a reference to avoid garbage collection
     canvas.image = photo
 
-    Header = Label(Frame_up, text="LOGIN", font=('Poppins', 23, "bold"), bg="white").place(x=40, y=20)
+    Header = Label(Frame_up, text="INICIO DE SESION", font=('Poppins', 23, "bold"), bg="white").place(x=40, y=20)
 
     line = Label(Frame_up, width=40, text="", height=1, bg="#007dfe", anchor=NW)
     line.place(x=35, y=65)
@@ -431,9 +439,9 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     #if name_entry=='':
 
     #   creating a label for password
-    passw_label = Label(Frame_down, text='Password', font=('calibre', 11, 'bold'), bg="white").place(x=65, y=118)
+    passw_label = Label(Frame_down, text='Contraseña', font=('calibre', 11, 'bold'), bg="white").place(x=65, y=118)
     pass_F = Button(Frame_down,
-                    text='Forgot Password',
+                    text='¿Olvidó su contraseña?',
                     command=disable_email,
                     font=('calibre', 9, 'bold'),
                     activebackground="White",
@@ -455,7 +463,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     # creating a button using the widget
     # Button that will call the submit function
     sub_btn = Button(Frame_down,
-                    text='Submit',
+                    text='Enviar',
                     font=('calibre', 10, 'bold'),
                     width=15,
                     bg="#007dfe",
@@ -465,7 +473,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                     command=submit).place(x=125, y=195)
 
     return_btn = Button(Frame_down,
-                    text='return',
+                    text='Regresar',
                     font=('calibre', 10, 'bold'),
                     width=10,
                     bg="#007dfe",
@@ -475,7 +483,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                     command=return_to_main_from_login).place(x=35, y=320)
 
     help_btn = Button(Frame_down,
-                    text=' Help? ',
+                    text='ayuda',
                     font=('calibre', 10, 'bold'),
                     width=8,
                     bg="#007dfe",
@@ -510,7 +518,7 @@ def Sign_up():
     root.withdraw()
     global ventana_registro
     ventana_registro = Toplevel(root)
-    ventana_registro.title("Sign up")
+    ventana_registro.title("REGISTRO")
     ventana_registro.geometry("650x450")
     ventana_registro.configure(bg="white")
 
@@ -549,11 +557,11 @@ def Sign_up():
             password = password_var.get()
 
             if len(usuario) == 0:
-                messagebox.showinfo("Warning", "Por favor llenar el campo: usuario")
+                messagebox.showinfo("ADVERTENCIA", "Por favor llenar el campo: usuario")
             elif len(correo) == 0:
-                messagebox.showinfo("Warning", "Por favor llenar el campo: correo")
+                messagebox.showinfo("ADVERTENCIA", "Por favor llenar el campo: correo")
             elif len(password) == 0:
-                messagebox.showinfo("Warning", "Por favor llenar el campo: contraseña")
+                messagebox.showinfo("ADVERTENCIA", "Por favor llenar el campo: contraseña")
             else:
                 password_hash = hash_md5(password)
 
@@ -571,11 +579,11 @@ def Sign_up():
                     )
                     conexion.commit()
                     conexion.close()
-                    messagebox.showinfo("Éxito", "Datos de usuario ingresados correctamente")
+                    messagebox.showinfo("ÉXITO", "Datos de usuario ingresados correctamente")
                     Login()
                     ventana_registro.withdraw()
                 except pymysql.MySQLError as e:
-                    messagebox.showerror("Error", f"Error en la base de datos: {str(e)}")
+                    messagebox.showerror("ERROR", f"Error en la base de datos: {str(e)}")
 
     frame_cabecera = Frame(ventana_registro, bg="white")
     frame_cabecera.grid(row=0, column=1, columnspan=1, padx=10, pady=10)
@@ -624,7 +632,7 @@ def User_interface():
 
     # crear nueva ventana para el Login
     User_interface = Toplevel(login_window)
-    User_interface.title("User_interface")
+    User_interface.title("INTERFAZ DE USUARIO")
     User_interface.geometry("400x450")
     User_interface.config(bg="white")
 
@@ -632,7 +640,7 @@ def User_interface():
 global root
 root = Tk()
 # agegarle un nombre a la ventana
-root.title("menu principal")
+root.title("Menu principal")
 # ajustar el tamaño de la ventana
 root.minsize(width=300, height=250)
 # agregar relleno a los lados de la ventana principal
@@ -640,7 +648,7 @@ root.config(padx=30, pady=30)
 
 # Colocar un botón en la interfaz con el nombre 'Login'
 boton_Login = Button(root,
-                    text="Login",
+                    text="Inicio de sesión",
                     command=Login,
                     width=10,
                     height=2,
@@ -657,7 +665,7 @@ boton_Login = Button(root,
 
 # Creando un botón en la interfaz con el nombre 'Sign up'
 boton_Sign_up = Button(root,
-                    text="Sign up",
+                    text="Registro",
                     command=Sign_up,
                     width=10,
                     height=2,
