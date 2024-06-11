@@ -23,10 +23,31 @@ def menu_usuario():
     global Menu_usu
     Menu_usu = Toplevel()
     Menu_usu.title("MENU DE USUARIO")
-    Menu_usu.minsize(width=400, height=200)
+    Menu_usu.minsize(width=400, height=400)
     Menu_usu.config(bg="white" ,padx=30, pady=30)
 
-    Header = Label(Menu_usu, text="Sesion Ingresada", font=('Poppins', 23, "bold"), bg="white").place(x=40, y=20)
+    Frame_up = Frame(Menu_usu, width=400, height=50, bg="white")
+    Frame_up.grid(row=0, column=1)
+
+    Frame_down = Frame(Menu_usu, width=400, height=380, bg="white")
+    Frame_down.grid(row=1, column=1)
+
+    image_path = image_path = os.path.join(os.path.dirname(__file__), '..', 'img',
+                                           'PNK.jpeg')  # Replace with your image path
+    image = Image.open(image_path)
+    photo = ImageTk.PhotoImage(image)
+
+    # Step 4: Create a Canvas widget and add the image to it
+    canvas = Canvas(Frame_down, width=200, height=200)
+    canvas.pack()
+
+    # Add the image to the canvas
+    canvas.create_image(0, 0, anchor=NW, image=photo)
+
+    # Keep a reference to avoid garbage collection
+    canvas.image = photo
+
+    Header = Label(Frame_up, text="PNK", font=('Poppins', 23, "bold"), bg="white").place(x=160, y=5)
     return_btn = Button(Menu_usu,
                         text='Cerrar sesion',
                         font=('calibre', 10, 'bold'),
@@ -35,7 +56,7 @@ def menu_usuario():
                         fg="white",
                         activebackground="#1E78D5",
                         activeforeground="white",
-                        command=return_to_main_from_menu_usu).place(x=125, y=90)
+                        command=return_to_main_from_menu_usu).place(x=145, y=280)
 
 global login_window
 global Email_var
@@ -132,6 +153,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         Email_entry = Entry(Frame_down,
                             textvariable=passw_var,
                             font=('calibre', 17, 'normal'),
+                            show='*',
                             bg="white",
                             borderwidth=2,
                             width=20).place(x=55, y=70)
