@@ -40,6 +40,108 @@ def menu_usuario():
 global login_window
 global Email_var
 def Login():# Esta función se ejecutará cuando se presione el botón
+    def cambiar_contra():
+
+        #ventana_forgot.withdraw()
+        global ventana_contra
+        ventana_contra = Toplevel(root)
+        ventana_contra.title("Recuperación de Contraseña")
+        ventana_contra.geometry("370x350")
+        ventana_contra.configure(bg="white")
+
+        def change_password():
+            password = passw_var.get()
+            re_password = re_passw_var.get()
+
+            if password == re_password:
+                conexion = pymysql.connect(
+                    host='localhost',
+                    user='root',
+                    password='',
+                    db='login_interface'
+                )
+                sql_login = conexion.cursor()
+
+                sql_login.execute(
+                    "SELECT email, password FROM usuario WHERE email = %s AND password = %s AND estado = 1",
+                    (password, re_password))
+
+                usuario = sql_login.fetchone()
+
+                conexion.close()
+
+                if usuario:
+                    messagebox.showinfo("Éxito", "Inicio de sesión exitoso")
+                    menu_usuario()
+                else:
+                    messagebox.showerror("Error", "Usuario o contraseña incorrectos\nó usuario desactivado")
+            else:
+                messagebox.showerror("Error", "contraseñas no son iguales")
+
+
+
+        passw_var = StringVar()
+        re_passw_var = StringVar()
+        def submit_password():
+
+            password = passw_var.get()
+            re_password = re_passw_var.get()
+            if len(password) == 0:
+                messagebox.showinfo("Warning", "Please fill the email field")
+            elif len(re_password) == 0:
+                messagebox.showinfo("Warning", "Please fill the password field")
+            else:
+                Email = Email_var.get()
+                password = hash_md5(passw_var.get())
+                print(Email)
+                print(password)
+                change_password()
+
+        Frame_up = Frame(ventana_contra, width=400, height=70, bg="white")
+        Frame_up.grid(row=0, column=1)
+
+        Frame_down = Frame(ventana_contra, width=400, height=380, bg="white")
+        Frame_down.grid(row=1, column=1)
+
+        Header = Label(Frame_up, text="CAMBIO CONTRASEÑA", font=('Poppins', 18, "bold"), bg="white").place(x=40, y=20)
+
+        line = Label(Frame_up, width=40, text="", height=1, bg="#007dfe", anchor=NW)
+        line.place(x=35, y=65)
+
+        Email_label = Label(Frame_down, text='Contraseña', font=('calibre', 11, 'bold'), bg="white").place(x=70, y=45)
+
+        Email_entry = Entry(Frame_down,
+                            textvariable=passw_var,
+                            font=('calibre', 17, 'normal'),
+                            bg="white",
+                            borderwidth=2,
+                            width=20).place(x=55, y=70)
+        # if name_entry=='':
+
+        #   creating a label for password
+        passw_label = Label(Frame_down, text='Repetir Contraseña', font=('calibre', 11, 'bold'), bg="white").place(x=65, y=118)
+
+        # creating an entry for password
+        passw_entry = Entry(Frame_down,
+                            textvariable=re_passw_var,
+                            font=('calibre', 17, 'normal'),
+                            show='*',
+                            borderwidth=2,
+                            bg="white",
+                            width=20).place(x=55, y=145)
+
+        # creating a button using the widget
+        # Button that will call the submit function
+        sub_btn = Button(Frame_down,
+                         text='Submit',
+                         font=('calibre', 10, 'bold'),
+                         width=15,
+                         bg="#007dfe",
+                         fg="white",
+                         activebackground="#1E78D5",
+                         activeforeground="white",
+                         command=submit_password).place(x=125, y=195)
+
 
     def verificar_credenciales():
         Email_usu = Email_var.get()
@@ -89,8 +191,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     Frame_down = Frame(Frame_right, width=400, height=380, bg="white")
     Frame_down.grid(row=1, column=1)
 
-    # declaring string variable
-    # for storing name and password
+
     global Email_var
     Email_var = StringVar()
     passw_var = StringVar()
@@ -114,10 +215,11 @@ def Login():# Esta función se ejecutará cuando se presione el botón
 
     def Forgot_password():
         login_window.withdraw()
-        ventana = Toplevel(root)
-        ventana.title("Recuperación de Contraseña")
-        ventana.geometry("650x450")
-        ventana.configure(bg="white")
+        global ventana_forgot
+        ventana_forgot = Toplevel(root)
+        ventana_forgot.title("Recuperación de Contraseña")
+        ventana_forgot.geometry("650x450")
+        ventana_forgot.configure(bg="white")
 
         def validate_length(new_value):
             max_length = 25
@@ -155,7 +257,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
             save_code_to_database(codigo_aleatorio)
             display_message("Código de Recuperación Enviado\ntiene 5 minutos antes de que el codigo cambie")
             # Change the code every 5 minutes
-            ventana.after(300000, boton_codigo)
+            ventana_forgot.after(300000, boton_codigo)
             email_sender = "correodepruebas716@gmail.com"
             email_receiver = correo.get()  # Assuming 'correo' is the Entry field for the email address
             subject = "Código de Recuperación"
@@ -205,7 +307,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
             if codigo_verificador != code_without_parentheses:
                 messagebox.showinfo("Too bad", "Verification code does not match.")
             else:
-                ventana.after_cancel(boton_codigo)
+                ventana_forgot.after_cancel(boton_codigo)
                 messagebox.showinfo("Good Job", "Codigo verificador coincide.")
                 Email_usu = Email_var.get()
 
@@ -225,15 +327,15 @@ def Login():# Esta función se ejecutará cuando se presione el botón
 
 
         # Registra la función de validación
-        validate_cmd = ventana.register(validate_length)
+        validate_cmd = ventana_forgot.register(validate_length)
 
-        frame_cabecera = Frame(ventana, bg="white")
+        frame_cabecera = Frame(ventana_forgot, bg="white")
         frame_cabecera.grid(row=0, column=1, columnspan=1, padx=10, pady=20)
         cabecera = Label(frame_cabecera, text="Recuperación de Contraseña", font=('Poppins', 18, "bold"),
                          bg="white", anchor="center")
         cabecera.pack()
 
-        frame_contenido = Frame(ventana, bg="white")
+        frame_contenido = Frame(ventana_forgot, bg="white")
         frame_contenido.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
 
         # Etiquetas y campos de entrada dentro del frame de contenido
@@ -263,72 +365,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         message_label = Label(frame_contenido, text="", font=('calibre', 12), bg="white")
         message_label.grid(row=4, column=1, padx=10, pady=10)
 
-    def cambiar_contra():
-        global ventana
-        ventana.withdraw()
-        global ventana_contra
-        ventana_contra = Toplevel(root)
-        ventana_contra.title("Recuperación de Contraseña")
-        ventana_contra.geometry("650x450")
-        ventana_contra.configure(bg="white")
 
-        def validate_password(password):
-            if len(password) < 8 or len(password) > 24:
-                return False
-            if not re.search(r'[A-Z]', password):
-                return False
-            if not re.search(r'[0-9]', password):
-                return False
-            if not re.search(r'[\W_]', password):  # \W busca cualquier carácter no alfanumérico
-                return False
-            return True
-
-        # Registra la función de validación
-        validate_cmd = ventana_contra.register(validate_password())
-
-        def validar_contraseña():
-            password1 = password.get()
-            password2 = password2_pass.get()
-
-            if password1 != password2:
-                messagebox.showwarning("Advertencia", "Las contraseñas no coinciden")
-                return False
-            else:
-                return True
-
-        def boton_guardar2():
-            if validar_contraseña():
-                # info para almacenar en bd
-                messagebox.showinfo("Cambio de contraseña", "Cambio de contraseña realizado con éxito")
-                from_recuperarContra_to_main()
-
-        frame_cabecera = Frame(ventana_contra, bg="white")
-        frame_cabecera.grid(row=0, column=1, columnspan=1, padx=10, pady=20)
-        cabecera = Label(frame_cabecera, text="Recuperacion de contraseña", font=('Poppins', 18, "bold"), bg="white",
-                         anchor="center")
-        cabecera.pack()
-
-        frame_contenido = Frame(ventana_contra, bg="white")
-        frame_contenido.grid(row=2, column=0, columnspan=2, padx=10, pady=10)
-
-        # Etiquetas y campos de entrada dentro del frame de contenido
-
-        password_label = Label(frame_contenido, text="CONTRASEÑA", font=('calibre', 11, 'bold'), bg="white")
-        password_label.grid(row=0, column=0, padx=30, pady=10, sticky="e")
-        password = Entry(frame_contenido, width=25, show="*", validate="key", validatecommand=(validate_cmd, '%P'),
-                         font=('calibre', 17, 'normal'), bg="white", borderwidth=2)
-        password.grid(row=0, column=1, padx=10, pady=10)
-
-        password2_label = Label(frame_contenido, text="REPETIR CONTRASEÑA", font=('calibre', 11, 'bold'), bg="white")
-        password2_label.grid(row=1, column=0, padx=30, pady=10, sticky="e")
-        password2_pass = Entry(frame_contenido, width=25, show="*", validate="key",
-                               validatecommand=(validate_cmd, '%P'), font=('calibre', 17, 'normal'), bg="white",
-                               borderwidth=2)
-        password2_pass.grid(row=1, column=1, padx=10, pady=10)
-
-        boton = Button(frame_contenido, text="verificar", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5",
-                       fg="white", activebackground="#1E78D5", activeforeground="white", command=boton_guardar2)
-        boton.grid(row=2, column=1, padx=1, pady=20)
 
     def disable_email():
         Email_usu = Email_var.get()
@@ -448,7 +485,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                     fg="white",
                     activebackground="#1E78D5",
                     activeforeground="white",
-                    command=Help_function).place(x=305, y=320)
+                    command=cambiar_contra).place(x=305, y=320)
 
 
 def return_to_main_from_login():
@@ -466,14 +503,6 @@ def return_to_main_from_signup():
 def from_recuperarContra_to_main():
     ventana_contra.withdraw()
     root.deiconify()
-
-
-
-
-
-
-
-
 
 
 def Sign_up():
