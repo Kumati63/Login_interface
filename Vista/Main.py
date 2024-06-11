@@ -13,6 +13,10 @@ from DTO.Varios import hash_md5
 from dotenv import load_dotenv
 from email.message import EmailMessage
 import smtplib
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
+import os
+import re
 import ssl
 
 load_dotenv()
@@ -157,12 +161,12 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                             bg="white",
                             borderwidth=2,
                             width=20).place(x=55, y=70)
-        # if name_entry=='':
 
-        #   creating a label for password
+
+
         passw_label = Label(Frame_down, text='Repetir Contraseña', font=('calibre', 11, 'bold'), bg="white").place(x=65, y=118)
 
-        # creating an entry for password
+
         passw_entry = Entry(Frame_down,
                             textvariable=re_passw_var,
                             font=('calibre', 17, 'normal'),
@@ -171,8 +175,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                             bg="white",
                             width=20).place(x=55, y=145)
 
-        # creating a button using the widget
-        # Button that will call the submit function
+
         sub_btn = Button(Frame_down,
                          text='Enviar',
                          font=('calibre', 10, 'bold'),
@@ -300,20 +303,37 @@ def Login():# Esta función se ejecutará cuando se presione el botón
             # Change the code every 5 minutes
             ventana_forgot.after(300000, boton_codigo)
             email_sender = "correodepruebas716@gmail.com"
-            email_receiver = correo.get()  # Assuming 'correo' is the Entry field for the email address
+            email_password = os.getenv("EMAIL_PASSWORD")  # Get the password from environment variable
+
+            # Validate email format
+            if not re.match(r"[^@]+@[^@]+\.[^@]+", Email_var.get()):
+                display_message("Correo electrónico no válido")
+                return
+
             subject = "CÓDIGO DE RECUPERACIÓN"
             body = f"Su código de recuperación es: {codigo_aleatorio}"
 
-            em = EmailMessage()
-            em["From"] = email_sender
-            em["To"] = email_receiver
-            em["Subject"] = subject
-            em.set_content(body)
+            # Create the email message
+            msg = MIMEMultipart()
+            msg["From"] = email_sender
+            msg["To"] = Email_var.get()
+            msg["Subject"] = subject
 
-            with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
-                smtp.login(email_sender, "v a h b i o b v i z k n y l o g")  # Replace with your email password
-                smtp.send_message(em)
+            # Attach the body with MIMEText
+            msg.attach(MIMEText(body, "plain"))
 
+            # Send the email
+            try:
+                with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+                    smtp.login(email_sender,  "v a h b i o b v i z k n y l o g")
+                    smtp.send_message(msg)
+                print("Email sent successfully!")
+            except smtplib.SMTPException as e:
+                print(f"Failed to send email: {e}")
+                display_message("Error al enviar el correo electrónico")
+            except Exception as e:
+                print(f"An error occurred: {e}")
+                display_message("Ha ocurrido un error")
             # Show a messagebox informing the user
             messagebox.showinfo("CÓDIGO DE RECUPERACIÓN","Código de Recuperación enviado. Verifique su correo electrónico.")
 
@@ -383,9 +403,9 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         correo_label = Label(frame_contenido, text="CORREO", font=('calibre', 11, 'bold'), bg="white")
         correo_label.grid(row=0, column=0, padx=30, pady=10, sticky="e")
         correo = Entry(frame_contenido, width=25, validate="key", validatecommand=(validate_cmd, '%P'),
-                       font=('calibre', 17, 'normal'), bg="white", borderwidth=2, state="normal")
+                          font=('calibre', 17, 'normal'), bg="white", borderwidth=2, textvariable=Email_var)
         correo.grid(row=0, column=1, padx=10, pady=10)
-        correo.insert(0, Email_var.get())  # Insert the value of Email_var into the Entry field
+        Email_var.set(Email_var.get())
         correo.config(state="disabled")
 
         boton1 = Button(frame_contenido, text="Enviar Código", font=('calibre', 10, 'bold'), width=15, bg="#1E78D5",
