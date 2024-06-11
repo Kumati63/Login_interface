@@ -49,12 +49,36 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         ventana_contra.geometry("370x350")
         ventana_contra.configure(bg="white")
 
+        def validar_contra(contraseña):
+            if len(contraseña) < 8 or len(contraseña) > 24:
+                return False
+            if not re.search(r'[A-Z]', contraseña):
+                return False
+            if not re.search(r'[0-9]', contraseña):
+                return False
+            if not re.search(r'[\W_]', contraseña):  # \W busca cualquier carácter no alfanumérico
+                return False
+            return True
+
+        def validar_contraseña():
+            password1 = passw_var.get()
+            password2 = re_passw_var.get()
+
+            if password1 != password2:
+                messagebox.showwarning("Advertencia", "Las contraseñas no coinciden")
+                return False
+            if not validar_contra(password1):
+                messagebox.showwarning("Advertencia",
+                                       "La contraseña debe tener Mayúsculas, números y caracteres especiales")
+                return False
+            return True
+
         def change_password():
             Email = Email_var.get()
             password = hash_md5(passw_var.get())
             re_password = hash_md5(re_passw_var.get())
 
-            if password == re_password:
+            if validar_contraseña():
                 conexion = pymysql.connect(
                     host='localhost',
                     user='root',
@@ -67,19 +91,9 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                                   (password, Email))
 
                 conexion.close()
-                messagebox.showerror("YAY!", "contraseña Cambiada correctamente")
+                messagebox.showinfo("YAY!", "contraseña Cambiada correctamente")
                 from_recuperarContra_to_login()
 
-<<<<<<< Updated upstream
-=======
-                if usuario:
-                    messagebox.showinfo("ÉXITO", "Inicio de sesión exitoso")
-                    menu_usuario()
-                else:
-                    messagebox.showerror("ERROR", "Usuario o contraseña incorrectos\nó usuario desactivado")
->>>>>>> Stashed changes
-            else:
-                messagebox.showerror("ERROR", "Las contraseñas no coinciden")
 
 
 
@@ -90,9 +104,9 @@ def Login():# Esta función se ejecutará cuando se presione el botón
             password = passw_var.get()
             re_password = re_passw_var.get()
             if len(password) == 0:
-                messagebox.showinfo("Warning", "Please fill the email field")
+                messagebox.showerror("ADVERTENCIA", "Debe completar el campo: Email")
             elif len(re_password) == 0:
-                messagebox.showinfo("Warning", "Please fill the password field")
+                messagebox.showerror("ADVERTENCIA", "Debe completar el campo: Contraseña")
             else:
                 Email = Email_var.get()
                 password = passw_var.get()
@@ -138,7 +152,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         # creating a button using the widget
         # Button that will call the submit function
         sub_btn = Button(Frame_down,
-                         text='Submit',
+                         text='Enviar',
                          font=('calibre', 10, 'bold'),
                          width=15,
                          bg="#007dfe",
@@ -545,6 +559,13 @@ def Sign_up():
             return False
         return True
 
+    def validar_correo(email):
+        if not email.endswith("@gmail.com"):
+            return False
+        if len(email) > 45:
+            return False
+        return True
+
     usuario_var = StringVar()
     password_var = StringVar()
     correo_var = StringVar()
@@ -564,6 +585,11 @@ def Sign_up():
                 messagebox.showinfo("ADVERTENCIA", "Por favor llenar el campo: contraseña")
             else:
                 password_hash = hash_md5(password)
+
+                if not validar_correo(correo):
+                    messagebox.showwarning("Advertencia",
+                                           "El correo debe terminar en @gmail.com y tener un máximo de 45 caracteres")
+                    return
 
                 try:
                     conexion = pymysql.connect(
