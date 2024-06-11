@@ -1,5 +1,6 @@
 #import tkinter as tk
 import re
+import ssl
 from tkinter import *
 from tkinter import messagebox
 from tkinter import Canvas
@@ -10,6 +11,32 @@ import time
 import pymysql
 import os
 from DTO.Varios import hash_md5
+import os
+from dotenv import load_dotenv
+from email.message import EmailMessage
+import ssl
+import smtplib
+
+load_dotenv()
+
+password_correo = os.getenv("password")
+email_sender = "correodepruebas716@gmail.com"
+email_reciver= "ultimoround14@gmail.com"
+
+subject ="hola"
+body= "aaaa"
+
+em = EmailMessage()
+em["From"]= email_sender
+em["To"] = email_reciver
+em["Subject"]= subject
+em.set_content(body)
+
+context = ssl.create_default_context()
+
+with smtplib.SMTP_SSL("smtp.gmail.com", 465, context= context) as smtp:
+    smtp.login(email_sender, password_correo)
+    smtp.sendmail(email_sender, email_reciver,em.as_string())
 
 
 def menu_usuario():
@@ -128,6 +155,26 @@ def Login():# Esta función se ejecutará cuando se presione el botón
                 print(codigo_aleatorio)
                 messagebox.showinfo("Código de Recuperación",
                                     "Código de Recuperación enviado\ntiene 5 minutos para la recuperación")
+
+
+                email_sender = "correodepruebas716@gmail.com"
+                email_receiver = correo.get()  # Assuming 'correo' is the Entry field for the email address
+                subject = "Código de Recuperación"
+                body = f"Su código de recuperación es: {codigo_aleatorio}"
+
+                em = EmailMessage()
+                em["From"] = email_sender
+                em["To"] = email_receiver
+                em["Subject"] = subject
+                em.set_content(body)
+
+                with smtplib.SMTP_SSL("smtp.gmail.com", 465) as smtp:
+                    smtp.login(email_sender, "v a h b i o b v i z k n y l o g")  # Replace with your email password
+                    smtp.send_message(em)
+
+                # Show a messagebox informing the user
+                messagebox.showinfo("Código de Recuperación",
+                                    "Código de Recuperación enviado. Verifique su correo electrónico.")
 
             # Registra la función de validación
             validate_cmd = ventana.register(validate_length)
