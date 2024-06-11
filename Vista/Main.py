@@ -132,6 +132,7 @@ def Login():# Esta función se ejecutará cuando se presione el botón
         Email_entry = Entry(Frame_down,
                             textvariable=passw_var,
                             font=('calibre', 17, 'normal'),
+                            show='*',
                             bg="white",
                             borderwidth=2,
                             width=20).place(x=55, y=70)
@@ -446,10 +447,10 @@ def Login():# Esta función se ejecutará cuando se presione el botón
 
     Email_entry = Entry(Frame_down,
                     textvariable=Email_var,
-                    font=('calibre', 17, 'normal'),
+                    font=('calibre', 15, 'normal'),
                     bg="white",
                     borderwidth=2,
-                    width=20).place(x=55, y=70)
+                    width=22).place(x=55, y=70)
     #if name_entry=='':
 
     #   creating a label for password
@@ -468,11 +469,11 @@ def Login():# Esta función se ejecutará cuando se presione el botón
     # creating an entry for password
     passw_entry = Entry(Frame_down,
                     textvariable=passw_var,
-                    font=('calibre', 17, 'normal'),
+                    font=('calibre', 15, 'normal'),
                     show='*',
                     borderwidth=2,
                     bg="white",
-                    width=20).place(x=55, y=145)
+                    width=22).place(x=55, y=145)
 
     # creating a button using the widget
     # Button that will call the submit function
@@ -587,8 +588,7 @@ def Sign_up():
                 password_hash = hash_md5(password)
 
                 if not validar_correo(correo):
-                    messagebox.showwarning("Advertencia",
-                                           "El correo debe terminar en @gmail.com y tener un máximo de 45 caracteres")
+                    messagebox.showwarning("Advertencia","El correo debe terminar en @gmail.com")
                     return
 
                 try:
