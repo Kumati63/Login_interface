@@ -37,7 +37,7 @@ def menu_usuario():
     Frame_down.grid(row=1, column=1)
 
     image_path = image_path = os.path.join(os.path.dirname(__file__), '..', 'img',
-                                           'PNK.jpeg')  # Replace with your image path
+                                           'gunter.gif')  # Replace with your image path
     image = Image.open(image_path)
     photo = ImageTk.PhotoImage(image)
 
@@ -51,7 +51,7 @@ def menu_usuario():
     # Keep a reference to avoid garbage collection
     canvas.image = photo
 
-    Header = Label(Frame_up, text="PNK", font=('Poppins', 23, "bold"), bg="white").place(x=160, y=5)
+    Header = Label(Frame_up, text="User Interface", font=('Poppins', 23, "bold"), bg="white").place(x=160, y=5)
     return_btn = Button(Menu_usu,
                         text='Cerrar sesion',
                         font=('calibre', 10, 'bold'),
