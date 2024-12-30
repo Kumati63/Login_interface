@@ -1,1 +1,1 @@
-Interfaz en Tkinter de un login y un Signup, con cambio de contraseña mediante codigo enviado al correo electronico.
+A proyect done with the Tkinter interface, this proyect was made to try the sending of an electronic mail for the change of the password.
