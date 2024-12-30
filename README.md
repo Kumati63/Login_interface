@@ -14,6 +14,8 @@ El sistema está diseñado para simular el proceso de recuperación de contrase�
 - **Envío de correos electrónicos**: Utiliza un servidor de correo electrónico para enviar el código de recuperación.
 - **Recuperación de contraseña**: Los usuarios reciben un código único por correo para restablecer su contraseña.
 
+**Nota importante**: Este proyecto está diseñado para ejecutarse en **PyCharm**. Asegúrate de abrir y ejecutar el proyecto en este IDE para garantizar el funcionamiento correcto.
+
 ## Tecnologías utilizadas
 
 - **Python**: Lenguaje de programación utilizado para el desarrollo.
