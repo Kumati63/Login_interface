@@ -4,7 +4,7 @@ Este proyecto fue desarrollado utilizando la interfaz gráfica de usuario **Tkin
 
 ## Descripción
 
-El proyecto utiliza Tkinter para crear una interfaz de usuario donde los usuarios pueden ingresar su correo electrónico. Una vez ingresado, si el usuario desea cambiar su contraseña o se ha olvidado de esta, el sistema puede genera un código único que se envía al correo proporcionado. Este código es necesario para realizar el cambio de contraseña en la aplicación, proporcionando una capa adicional de seguridad.
+El proyecto utiliza Tkinter para crear una interfaz de usuario donde los usuarios pueden ingresar su correo electrónico. Una vez ingresado, si el usuario desea cambiar su contraseña o se ha olvidado la actual, el sistema puede genera un código único que se envía al correo proporcionado. Este código es necesario para realizar el cambio de contraseña en la aplicación, proporcionando una capa adicional de seguridad.
 
 El sistema está diseñado para simular el proceso de recuperación de contraseña, lo cual es un componente común en muchas aplicaciones web modernas.
 
